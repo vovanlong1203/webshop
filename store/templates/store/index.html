@@ -1,0 +1,86 @@
+{% extends 'store/layouts/main.html' %}
+
+{% block content %}
+{% include 'store/inc/slidebar.html' %}
+
+    <!-- Featured Start -->
+    <div class="container-fluid pt-5">
+        <div class="row px-xl-5 pb-3">
+            <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
+                <div class="d-flex align-items-center border mb-4" style="padding: 30px;">
+                    <h1 class="fas fa-check text-primary m-0 mr-3"></h1>
+                    <h5 class="font-weight-semi-bold m-0">Quality Product</h5>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
+                <div class="d-flex align-items-center border mb-4" style="padding: 30px;">
+                    <h1 class="fas fa-shipping-fast text-primary m-0 mr-2"></h1>
+                    <h5 class="font-weight-semi-bold m-0">Free Shipping</h5>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
+                <div class="d-flex align-items-center border mb-4" style="padding: 30px;">
+                    <h1 class="fas fa-exchange-alt text-primary m-0 mr-3"></h1>
+                    <h5 class="font-weight-semi-bold m-0">14-Day Return</h5>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
+                <div class="d-flex align-items-center border mb-4" style="padding: 30px;">
+                    <h1 class="fas fa-phone-volume text-primary m-0 mr-3"></h1>
+                    <h5 class="font-weight-semi-bold m-0">24/7 Support</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Featured End -->
+
+
+    <br>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h5 class="">Danh mục</h5>
+                <hr>
+                <div class="row">
+                    {% for cat in category  %}
+                    <div class="col-md-3">
+                        <div class="card">
+                            <img src="{{ cat.image.url }}" class="card-img-top" alt="{{ cat.name }}" class="w-50" >
+                            <div class="card-body">
+                                <h5 class="card-title text-center">{{ cat.name }}</h5>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h5 class="">Sản phẩm</h5>
+                <hr>
+                <div class="row">
+                    {% for pro in product  %}
+                    <div class="col-md-3">
+                        <div class="card">
+                            <img src="{{ pro.image.url }}" class="card-img-top" alt="{{ pro.name }}" class="w-50" >
+                            <div class="card-body">
+                                <h5 class="card-title text-center">{{ pro.name }}</h5>
+                                <a href="{% url 'productdetail' pro.id  %}" class="btn btn-primary">View details</a>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    
+    </div>
+{% endblock content %}
+
