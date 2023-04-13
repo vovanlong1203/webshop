@@ -72,7 +72,7 @@ def collection(request):
     return render(request, 'store/collection.html',{'category':category})
 
 def productdetail(request,pk):
-
+    category = Category.objects.filter(status=0)
     product = Product.objects.get(id = pk)
     product_review = Product.objects.get(id = pk)
     reviews = Review.objects.filter(product=product_review)    
@@ -81,14 +81,33 @@ def productdetail(request,pk):
         if request.user.is_authenticated:
             cart, created = Cart.objects.get_or_create(user=request.user, completed=False)
             username = request.session['username']  
-            context =   {'product': product,"cart": cart,'reviews': reviews,'username':username}
+            context =   {'product': product,"cart": cart,'reviews': reviews,'username':username,'category':category}
         else:
-            context = {'product': product,'reviews': reviews}
+            context = {'product': product,'reviews': reviews,'category':category}
     else:
-        context = {'product': product,'reviews': reviews}
+        context = {'product': product,'reviews': reviews,'category':category}
     return render(request, 'store/product_detail.html', context)
 
+def category_view(request, pk):
+    category = Category.objects.all()
+    category_tmp = Category.objects.get(id=pk)
+    products = Product.objects.filter(category= category_tmp)
+    context = {'category':category, 'category_tmp':category_tmp, 'products': products}
+    return render(request, 'store/category.html',context)
 
+
+def sort_product(request):
+    
+    if request.POST.get('sort','1'):
+        products = Product.objects.order_by('selling_price')
+    elif request.POST.get('sort','2'):
+        products = Product.objects.order_by('-selling_price')
+    else:
+        products = Product.objects.all()
+    context = {
+        'products': products,
+    }
+    return render(request, 'sort_products.html', context)
 
 def login_view(request):
     category = Category.objects.filter(status=0)

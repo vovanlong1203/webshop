@@ -79,10 +79,9 @@
 
       </div>
       {% else %}
-      <p><span class="h2">ko co san pham trong gio hang </span></p>
+      <p><span class="h2">Không có sản phẩm nào trong giỏ hàng, vui lòng quay lại </span></p>
       <div class="d-flex justify-content-end">
         <button type="submit" class="btn btn-light btn-lg me-2"><a href="{% url 'home' %}" style="text-decoration: none;">Back home</a> </button>
-        <button type="button" class="btn btn-primary btn-lg me-2">Checkout</button>
       </div>
       {% endif %}
     </div>
