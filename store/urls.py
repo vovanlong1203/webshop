@@ -23,6 +23,9 @@ urlpatterns = [
      path('search_product/',views.search_product, name='search_product'),
      path('review/',views.Review_Rate, name='reivew'),
      path('remove_product/<int:pk>/',views.remove_product, name='remove_product'),
+     path('plus_cart/<int:pk>/', views.plus_item, name='plus_cart'),
+     path('minus_cart/<int:pk>/', views.minus_item, name='minus_cart'),
+
 
      path('adminlogin/',views.admin_login_view, name='adminlogin'),
      path('loginadmin/',views.admin_login, name='loginadmin'),

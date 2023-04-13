@@ -248,6 +248,26 @@ def remove_product(request,pk):
     else:
         return redirect('cart')
 
+def plus_item(request,pk):
+    if request.user.is_authenticated:
+        item = get_object_or_404(CartItem, id=pk)
+        item.quantity += 1
+        item.save()
+        return redirect('cart')
+    else:
+        return redirect('cart')
+
+def minus_item(request,pk):
+    if request.user.is_authenticated:
+        item = get_object_or_404(CartItem, id=pk)
+        if item.quantity == 1:
+            item.quantity = 1
+        else:
+            item.quantity -= 1
+        item.save()
+        return redirect('cart')
+    else:
+        return redirect('cart')
 
 
 def admin_login_view(request):
@@ -295,3 +315,4 @@ def product_view(request):
     products= Product.objects.all()
     context = {'products':products}
     return render(request, 'admin/view_products.html',context)
+
