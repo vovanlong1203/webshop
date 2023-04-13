@@ -1,5 +1,4 @@
 {% extends 'store/layouts/main.html' %}
-
 {% block title %}Product Detail{% endblock title %}
 {% block content %}
 <div class="container my-5">
@@ -10,8 +9,12 @@
         <div class="col-sm-5 offset-sm-1">
             <h2>Product Title: {{product.name}}</h2>
         <hr>
-            <p>Product Description: {{ product.description}} </p> <br>
-            <h4>Rs. {{ product.original_price }} <small class="fw-light text-decoration-line-through">{{ product.selling_price }}</small></h4> <br>
+            <p>{{ product.description}} </p> <br>
+            {% if product.selling_price != product.original_price %}
+            <h4>Rs. {{ product.selling_price|floatformat:"g" }}₫ <small class="fw-light text-decoration-line-through">{{ product.original_price|floatformat:"g" }}₫</small></h4> <br>
+            {% else %}
+            <h4>Rs. {{ product.selling_price|floatformat:"g" }}₫ </h4> <br>
+            {% endif %}
             {% if request.user.is_authenticated %}
             <button value="{{ product.id }}" class="btn-add-to-cart btn btn-primary shadow px-5 py-2" >Add to cart</button>
             {% else %}
