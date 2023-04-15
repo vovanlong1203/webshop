@@ -89,25 +89,58 @@ def productdetail(request,pk):
     return render(request, 'store/product_detail.html', context)
 
 def category_view(request, pk):
+    request.session['username'] = request.session.get('username')
     category = Category.objects.all()
     category_tmp = Category.objects.get(id=pk)
     products = Product.objects.filter(category= category_tmp)
-    context = {'category':category, 'category_tmp':category_tmp, 'products': products}
+    if request.user.is_authenticated:
+        if request.session['username']:
+            cart, created = Cart.objects.get_or_create(user=request.user, completed=False)
+            username = request.session['username']  
+            context = {'category':category, 'category_tmp':category_tmp, 'products': products, 'username':username,"cart": cart, }
+        else:
+            context = {'category':category, 'category_tmp':category_tmp, 'products': products,"cart": cart, }
+    else:
+        context = {'category':category, 'category_tmp':category_tmp, 'products': products,}
+
     return render(request, 'store/category.html',context)
 
-
-def sort_product(request):
-    
-    if request.POST.get('sort','1'):
-        products = Product.objects.order_by('selling_price')
-    elif request.POST.get('sort','2'):
-        products = Product.objects.order_by('-selling_price')
+def sort_increment_product(request, pk):
+    request.session['username'] = request.session.get('username')
+    category = Category.objects.all()
+    category_tmp = Category.objects.get(id=pk)
+    products = Product.objects.filter(category= category_tmp)
+    products = products.order_by('selling_price')
+    if request.user.is_authenticated:
+        if request.session['username']:
+            cart, created = Cart.objects.get_or_create(user=request.user, completed=False)
+            username = request.session['username']  
+            context = {'category':category, 'category_tmp':category_tmp, 'products': products, 'username':username,"cart": cart, }
+        else:
+            context = {'category':category, 'category_tmp':category_tmp, 'products': products,"cart": cart, }
     else:
-        products = Product.objects.all()
-    context = {
-        'products': products,
-    }
-    return render(request, 'sort_products.html', context)
+        context = {'category':category, 'category_tmp':category_tmp, 'products': products,}
+
+    return render(request, 'store/category.html',context)
+
+def sort_decrement_product(request, pk):
+    request.session['username'] = request.session.get('username')
+    category = Category.objects.all()
+    category_tmp = Category.objects.get(id=pk)
+    products = Product.objects.filter(category= category_tmp)
+    products = products.order_by('-selling_price')
+    if request.user.is_authenticated:
+        if request.session['username']:
+            cart, created = Cart.objects.get_or_create(user=request.user, completed=False)
+            username = request.session['username']  
+            context = {'category':category, 'category_tmp':category_tmp, 'products': products, 'username':username,"cart": cart, }
+        else:
+            context = {'category':category, 'category_tmp':category_tmp, 'products': products,"cart": cart, }
+    else:
+        context = {'category':category, 'category_tmp':category_tmp, 'products': products,}
+
+    return render(request, 'store/category.html',context)
+
 
 def login_view(request):
     category = Category.objects.filter(status=0)
@@ -138,7 +171,9 @@ def signup_view(request):
     conext = {'category':category}
     if request.method == 'POST':
         username = request.POST['username']
-        yourname = request.POST['yourname']
+        firstname = request.POST['firstname']
+        lastname = request.POST['lastname']
+
         email = request.POST['email']
         pass1 = request.POST['pass1']
         pass2 = request.POST['pass2']
@@ -157,8 +192,9 @@ def signup_view(request):
         
 
         myuser = User.objects.create_user(username,email,pass1)
-        myuser.last_name = yourname
-        myuser.is_active = False
+        myuser.first_name = firstname
+        myuser.last_name = lastname
+        myuser.is_active = True
         myuser.save()
         messages.success(request, "Your Account has been created succesfully!! Please check your email to confirm your email address in order to activate your account.")
         return redirect('login')
@@ -228,11 +264,16 @@ def decrement_product(request):
 def cart(request):
     cart =None
     cartitems = []
-    if request.user.is_authenticated:
-        cart, created = Cart.objects.get_or_create(user=request.user, completed=False)
-        cartitems = cart.cartitems.all()
+    request.session['username'] = request.session.get('username')
+    if request.session['username']:
+        if request.user.is_authenticated:
+            cart, created = Cart.objects.get_or_create(user=request.user, completed=False)
+            cartitems = cart.cartitems.all()
+            username = request.session['username']
+        context = {"cart":cart, 'items':cartitems,'username':username}
+    else:
+        context = {"cart":cart, 'items':cartitems,}
 
-    context = {"cart":cart, 'items':cartitems}
     return render(request, 'store/cart.html',context)
 
 
@@ -288,6 +329,10 @@ def minus_item(request,pk):
     else:
         return redirect('cart')
 
+
+def profile_view(request):
+
+    return render(request, 'store/profile.html')
 
 def admin_login_view(request):
     return render(request, 'admin/adminlogin.html')

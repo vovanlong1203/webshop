@@ -37,9 +37,10 @@
               </li>
       
             </ul>
-            <form class="d-flex ms-auto">
-              <input class="form-control me-2" type="text" placeholder="Search">
-              <button class="btn btn-primary" type="button">Search</button>
+            <form class="d-flex ms-auto" method="POST" action="{% url 'search_product' %}">
+              {% csrf_token %}
+              <input class="form-control me-2" name="search" type="text" placeholder="Search">
+              <button class="btn btn-primary" type="submit">Search</button>
             </form>
           <ul class="navbar-nav">
             <!-- {% if user.is_authenticated %} -->
@@ -48,7 +49,7 @@
             {{ username }}
               </a>
               <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                  <li><a class="dropdown-item" href="#">Profile</a></li>
+                  <li><a class="dropdown-item" href="{% url 'profile' %}">Profile</a></li>
                   <li><a class="dropdown-item" href="{% url 'signout' %}">Logout</a></li>
 
               </ul>
