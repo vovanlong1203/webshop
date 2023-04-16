@@ -18,19 +18,16 @@ def home(request):
     product = Product.objects.filter(status=0)
     request.session['username'] = request.session.get('username')
 
-
-
     if request.session['username']:
         if request.user.is_authenticated:
             cart, created = Cart.objects.get_or_create(user=request.user, completed=False)
-
     # Lấy username của người dùng
         username = request.session['username']
         conext = {'category':category, 'product':product,'username':username,"cart": cart}
     else:
         conext = {'category':category, 'product':product,}
-
     return render(request, 'store/index.html',conext)
+
 
 def contact_us(request):
     category = Category.objects.filter(status=0)
@@ -47,6 +44,8 @@ def contact_us(request):
     else:
         conext = {'category':category, 'product':product,}
     return render(request, 'store/contactus.html',conext)
+
+
 def about_us(request):
     category = Category.objects.filter(status=0)    
     product = Product.objects.filter(status=0)
@@ -63,13 +62,13 @@ def about_us(request):
         conext = {'category':category, 'product':product,}
     return render(request, 'store/aboutus.html',conext)
 
+
 def collection(request):
     category = Category.objects.filter(status=0)
     product = Product.objects.filter(status=0)
     conext = {'category':category, 'product':product}
-
-
     return render(request, 'store/collection.html',{'category':category})
+
 
 def productdetail(request,pk):
     category = Category.objects.filter(status=0)
@@ -88,6 +87,7 @@ def productdetail(request,pk):
         context = {'product': product,'reviews': reviews,'category':category}
     return render(request, 'store/product_detail.html', context)
 
+
 def category_view(request, pk):
     request.session['username'] = request.session.get('username')
     category = Category.objects.all()
@@ -104,6 +104,7 @@ def category_view(request, pk):
         context = {'category':category, 'category_tmp':category_tmp, 'products': products,}
 
     return render(request, 'store/category.html',context)
+
 
 def sort_increment_product(request, pk):
     request.session['username'] = request.session.get('username')
@@ -158,7 +159,6 @@ def login_view(request):
             username = request.session['username']
             messages.success(request, "Logged In Sucessfully!!")
             conext = {'category':category, 'product':product, 'username':username}
-            #return render(request, 'store/index.html',conext)
             return redirect('home')
         else:
             messages.error(request, "Bad Credentials!!")
@@ -190,7 +190,6 @@ def signup_view(request):
             messages.error(request, "Passwords didn't matched!!")
             return redirect('home')
         
-
         myuser = User.objects.create_user(username,email,pass1)
         myuser.first_name = firstname
         myuser.last_name = lastname
@@ -202,11 +201,11 @@ def signup_view(request):
     return render(request, 'store/signup.html',{'category':category})
 
 
-
 def signout_view(request):
     logout(request)
     messages.success(request, "Logged Out Successfully!!")
     return redirect('home')
+
 
 def add_to_cart(request):
     data = json.loads(request.body)
@@ -221,7 +220,6 @@ def add_to_cart(request):
         num_of_item = cart.num_of_items
         
         print(cartitem)
-
     return JsonResponse(num_of_item, safe=False)
 
 def increment_product(request):
@@ -237,7 +235,6 @@ def increment_product(request):
         num_of_item = cart.num_of_items
         
         print(cartitem)
-
     return JsonResponse(num_of_item, safe=False)
 
 
@@ -287,6 +284,7 @@ def search_product(request):
         conext = {'product':product}
     return render(request, 'store/search_product.html',conext)
 
+
 def Review_Rate(request):
     if request.method == 'GET':
         prod_id = request.GET['prod_id']
@@ -298,7 +296,6 @@ def Review_Rate(request):
         return redirect('productdetail',pk=prod_id)
 
 
-
 def remove_product(request,pk):
     if request.user.is_authenticated:
         item = get_object_or_404(CartItem, id=pk,)
@@ -308,6 +305,7 @@ def remove_product(request,pk):
     else:
         return redirect('cart')
 
+
 def plus_item(request,pk):
     if request.user.is_authenticated:
         item = get_object_or_404(CartItem, id=pk)
@@ -316,6 +314,7 @@ def plus_item(request,pk):
         return redirect('cart')
     else:
         return redirect('cart')
+
 
 def minus_item(request,pk):
     if request.user.is_authenticated:
@@ -331,7 +330,6 @@ def minus_item(request,pk):
 
 
 def profile_view(request):
-
     return render(request, 'store/profile.html')
 
 def admin_login_view(request):
@@ -354,6 +352,7 @@ def admin_login(request):
         return redirect('adminlogin')
     return render(request, 'admin/adminlogin.html')
     
+
 @login_required(login_url='adminlogin')
 def admin_dashboard_view(request):
     customercount= User.objects.all().count()
@@ -380,3 +379,42 @@ def product_view(request):
     context = {'products':products}
     return render(request, 'admin/view_products.html',context)
 
+@login_required(login_url='adminlogin')
+def customer_update_view(request,pk):
+    user = User.objects.get(id=pk)
+    context = {'user':user}
+    return render(request, 'admin/customer_update_view.html',context)
+
+@login_required(login_url='adminlogin')
+def update_customer(request):
+    id_user = request.POST['id_user']
+    fisrtname = request.POST['firstname']
+    lastname = request.POST['lastname']
+    username = request.POST['username']
+    email = request.POST['email']
+    user = User.objects.get(id=id_user)
+    user.first_name = fisrtname
+    user.last_name =lastname
+    user.email = email
+    user.username = username
+    user.save()
+    return redirect('customer_view')
+    
+
+@login_required(login_url='adminlogin')
+def delete_customer(request, pk):
+    user = User.objects.get(id=pk)
+    user.delete()
+    return redirect('customer_view')
+
+
+@login_required(login_url='adminlogin')
+def category_view_admin(request):
+    categorys= Category.objects.all()
+    context = {'categorys':categorys}
+    return render(request, 'admin/view_category.html',context)
+
+
+@login_required(login_url='adminlogin')
+def add_category_view(request):
+    return render(request, 'admin/add_category_view.html')

@@ -48,8 +48,8 @@ facebook : fb.com/sumit.luv
         <td> {{ c.email }} </td>
         <td>{{c.first_name}}</td>
         <td>{{c.last_name}}</td>
-        <td><a class="btn btn-primary btn-xs" href=""><span class="glyphicon glyphicon-edit"></span></a></td>
-        <td><a class="btn btn-danger btn-xs" href=""><span class="glyphicon glyphicon-trash"></span></a></td>
+        <td><a class="btn btn-primary btn-xs" href="{% url 'customer_update_view' c.id %}"><span class="glyphicon glyphicon-edit"></span></a></td>
+        <td><a class="btn btn-danger btn-xs" href="{% url 'delete_customer' c.id %}"><span class="glyphicon glyphicon-trash"></span></a></td>
 
       </tr>
       {% endfor %}

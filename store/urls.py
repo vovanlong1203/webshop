@@ -38,5 +38,10 @@ urlpatterns = [
      path('logoutadmin/',views.logout_view, name='logoutadmin'),
      path('customer_view/',views.customer_view, name='customer_view'),
      path('product_view/',views.product_view, name='product_view'),
+     path('customer_update_view/<int:pk>',views.customer_update_view, name='customer_update_view'),
+     path('update_customer/',views.update_customer, name='update_customer'),
+     path('delete_customer/<int:pk>', views.delete_customer, name='delete_customer'),
 
+     path('category_view/',views.category_view_admin, name='category_view_admin'),
+     path('add_category_view/', views.add_category_view, name='add_category_view'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
