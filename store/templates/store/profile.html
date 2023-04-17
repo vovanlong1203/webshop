@@ -4,11 +4,10 @@
 
 <div class="container my-5">
     <div class="row">
-     <h3>Welcome Sonam</h3>
+     <h3>Welcome {{ user.username }}</h3>
      <div class="col-sm-2 border-end">
       <ul class="list-unstyled">
        <li class="d-grid"><a href="{% url 'profile' %}" class="btn btn-primary">Profile</a></li>
-       <li class="d-grid"><a href="#" class="btn">Address</a></li>
       </ul>
      </div>
      <div class="col-sm-8 offset-sm-1">
@@ -16,24 +15,24 @@
        {% csrf_token %}
        <div class="col-12">
          <label for="inputName" class="form-label">User Name</label>
-         <input type="text" class="form-control" id="inputEmail" placeholder="User Name" name="username" required>
+         <input type="text" class="form-control" id="inputEmail" placeholder="User Name" value="{{ user.username }}" name="username" required>
        </div>
        <div class="col-12">
          <label for="inputAddress" class="form-label">First Name</label>
-         <input type="text" class="form-control" id="inputAddress" placeholder="First Name" name="firstname" required>
+         <input type="text" class="form-control" id="inputAddress" placeholder="First Name" value="{{ user.first_name }}"="firstname" required>
        </div>
        <div class="col-12">
          <label for="inputAddress" class="form-label">Last Name</label>
-         <input type="text" class="form-control" id="inputAddress" placeholder="Last name" name="lastname" required>
+         <input type="text" class="form-control" id="inputAddress" placeholder="Last name" value="{{ user.last_name }}" name="lastname" required>
        </div>
        <div class="col-12">
          <label for="inputAddress2" class="form-label">Email</label>
-         <input type="text" class="form-control" id="inputAddress2" placeholder="email" name="email" required>
+         <input type="text" class="form-control" id="inputAddress2" placeholder="email" value="{{ user.email }}" name="email" required>
        </div>
 
 
        <div class="col-12 mt-3">
-         <button type="submit" class="btn btn-primary">Submit</button>
+         <button type="submit" class="btn btn-primary">Update</button>
        </div>
       </form>
      </div>

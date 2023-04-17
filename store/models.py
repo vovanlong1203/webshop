@@ -12,7 +12,6 @@ def get_file_path(request,filename):
     return os.path.join('uploads/',filename)
 
 class Category(models.Model):
-    # slug = models.CharField(max_length=255,null=False,blank=True)
     name = models.CharField(max_length=255,null=False, blank=True)
     image = models.ImageField(upload_to=get_file_path,null=True,blank=True)
     description = models.TextField(max_length=500,null=False, blank=False)
@@ -27,7 +26,6 @@ class Category(models.Model):
     
 class Product(models.Model):
     category = models.ForeignKey(Category,on_delete=models.CASCADE)
-    # slug = models.CharField(max_length=255,null=False,blank=True)
     name = models.CharField(max_length=255,null=False, blank=True)
     image = models.ImageField(upload_to=get_file_path,null=True,blank=True)
     small_description = models.TextField(max_length=1000,null=False, blank=False)
@@ -37,8 +35,6 @@ class Product(models.Model):
     selling_price = models.FloatField(null=False, blank=False)
     status = models.BooleanField(default=False, help_text="0=default, 1=Hidden")
     trending = models.BooleanField(default=False,help_text="0=default, 1=Trending")
-    # tag= models.CharField(max_length=150,null=False,blank=False)
-    # meta_title = models.CharField(max_length=150,null=False, blank=False)
     meta_keywords = models.CharField(max_length=150,null=False, blank=False)
     created_at = models.DateTimeField(auto_now_add=True)    
 

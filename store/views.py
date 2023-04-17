@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 import json
 from django.shortcuts import get_object_or_404
-
+import random
 # Create your views here.
 
 
@@ -16,16 +16,18 @@ from django.shortcuts import get_object_or_404
 def home(request):
     category = Category.objects.filter(status=0)
     product = Product.objects.filter(status=0)
+    product_trend = Product.objects.filter(trending=1)
+    product = random.sample(list(product),20)
     request.session['username'] = request.session.get('username')
-
+    
     if request.session['username']:
         if request.user.is_authenticated:
             cart, created = Cart.objects.get_or_create(user=request.user, completed=False)
     # Lấy username của người dùng
         username = request.session['username']
-        conext = {'category':category, 'product':product,'username':username,"cart": cart}
+        conext = {'category':category, 'product':product,'username':username,"cart": cart,"product_trend":product_trend}
     else:
-        conext = {'category':category, 'product':product,}
+        conext = {'category':category, 'product':product,"product_trend":product_trend}
     return render(request, 'store/index.html',conext)
 
 
@@ -165,6 +167,8 @@ def login_view(request):
             return redirect('login')
     return render(request, 'store/login.html',{'category':category})
 
+def update_profile_user(request):
+    pass
 
 def signup_view(request):
     category = Category.objects.filter(status=0)
@@ -275,6 +279,7 @@ def cart(request):
 
 
 def search_product(request):
+
     if request.method == 'POST':
        search = request.POST['search']
        product=Product.objects.filter(name__contains=search)
@@ -282,6 +287,7 @@ def search_product(request):
     else:
         product = Product.objects.filter(status=0)
         conext = {'product':product}
+    
     return render(request, 'store/search_product.html',conext)
 
 
@@ -330,7 +336,18 @@ def minus_item(request,pk):
 
 
 def profile_view(request):
-    return render(request, 'store/profile.html')
+    request.session['username'] = request.session.get('username')
+    if request.session['username']:
+        if request.user.is_authenticated:
+            cart, created = Cart.objects.get_or_create(user=request.user, completed=False)
+            cartitems = cart.cartitems.all()
+            username = request.session['username']
+            user = User.objects.get_or_create(username=username)
+        context = {"cart":cart, 'items':cartitems,'username':username}
+    else:
+        context = {"cart":cart, 'items':cartitems,}
+
+    return render(request, 'store/profile.html',context)
 
 def admin_login_view(request):
     return render(request, 'admin/adminlogin.html')
