@@ -28,8 +28,8 @@ MESSAGE_TAGS = {message_constants.DEBUG: 'debug',
 SECRET_KEY = 'django-insecure-v)m&u*pi(=-sbm2w-o0gktx-%lsh0!)fot@km@2z-78ticpt7f'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
-ALLOWED_HOSTS = ['127.0.0.1','192.168.1.4']
+DEBUG = True
+ALLOWED_HOSTS = ['127.0.0.1','192.168.1.4','192.168.175.33']
 
 
 APPEND_SLASH = False

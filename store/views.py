@@ -168,7 +168,26 @@ def login_view(request):
     return render(request, 'store/login.html',{'category':category})
 
 def update_profile_user(request):
-    pass
+    if request.method == 'POST':
+        username = request.POST['username']
+        fisrtname = request.POST['firstname']
+        lastname = request.POST['lastname']
+        email = request.POST['email']
+        user = User.objects.get(username=username)
+        user.first_name = fisrtname
+        user.last_name =lastname
+        user.email = email
+        user.save()
+    return redirect('profile')
+
+def change_password_view(request):
+    request.session['username'] = request.session.get('username')
+    username = request.session['username']
+    cart, created = Cart.objects.get_or_create(user=request.user, completed=False)
+    user = User.objects.get_or_create(username=username)
+    category = Category.objects.filter(status=0)
+    context = {'username': username,"cart":cart,'category':category}
+    return render(request, 'store/changepassword.html',context)
 
 def signup_view(request):
     category = Category.objects.filter(status=0)
@@ -265,15 +284,17 @@ def decrement_product(request):
 def cart(request):
     cart =None
     cartitems = []
+    category = Category.objects.filter(status=0)
+
     request.session['username'] = request.session.get('username')
     if request.session['username']:
         if request.user.is_authenticated:
             cart, created = Cart.objects.get_or_create(user=request.user, completed=False)
             cartitems = cart.cartitems.all()
             username = request.session['username']
-        context = {"cart":cart, 'items':cartitems,'username':username}
+        context = {"cart":cart, 'items':cartitems,'username':username,'category':category}
     else:
-        context = {"cart":cart, 'items':cartitems,}
+        context = {"cart":cart, 'items':cartitems,'category':category}
 
     return render(request, 'store/cart.html',context)
 
@@ -336,6 +357,7 @@ def minus_item(request,pk):
 
 
 def profile_view(request):
+    category = Category.objects.filter(status=0)
     request.session['username'] = request.session.get('username')
     if request.session['username']:
         if request.user.is_authenticated:
@@ -343,9 +365,9 @@ def profile_view(request):
             cartitems = cart.cartitems.all()
             username = request.session['username']
             user = User.objects.get_or_create(username=username)
-        context = {"cart":cart, 'items':cartitems,'username':username}
+        context = {"cart":cart, 'items':cartitems,'username':username,'category':category}
     else:
-        context = {"cart":cart, 'items':cartitems,}
+        context = {"cart":cart, 'items':cartitems,'category':category}
 
     return render(request, 'store/profile.html',context)
 

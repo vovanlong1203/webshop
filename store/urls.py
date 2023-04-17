@@ -18,7 +18,9 @@ urlpatterns = [
      path('category_sort_de/<int:pk>/', views.sort_decrement_product, name='category_sort_de'),
      path('profile/',views.profile_view, name='profile'),
 
-     # path('sort/', views.sort_product, name='sort'),
+     path('update_profile_user/', views.update_profile_user, name='update_profile_user'),
+     path('changepassword_view/', views.change_password_view, name='changepassword_view'),
+
      path('add_to_cart', views.add_to_cart, name='add_to_cart'),
      path('cart/', views.cart, name='cart'),
      
