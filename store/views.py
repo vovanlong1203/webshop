@@ -270,6 +270,41 @@ def add_to_cart(request):
         print(cartitem)
     return JsonResponse(num_of_item, safe=False)
 
+def payment_view(request):
+    cart =None
+    cartitems = []
+    category = Category.objects.filter(status=0)
+    request.session['username'] = request.session.get('username')
+    if request.session['username']:
+        if request.user.is_authenticated:
+            user = User.objects.get(id = request.user.id )
+            cart, created = Cart.objects.get_or_create(user=request.user, completed=False)
+            cartitems = cart.cartitems.all()
+            username = request.session['username']
+        context = {"cart":cart, 'items':cartitems,'username':username,'category':category, 'user':user}
+    else:
+        context = {"cart":cart, 'items':cartitems,'category':category}
+
+    # return render(request, 'store/cart.html',context)
+    return render(request, 'store/checkout.html', context)
+
+# def payment_fun(request):
+#     if request.user.is_authenticated:
+#         if request.method == 'POST':
+#             username = request.POST['username']
+#             address = request.POST['address']
+#             phone = request.POST['phonenumber']
+#             zipcode = request.POST['zipcode']
+#             cartitem, created =CartItem.objects.get_or_create(cart=cart, product=product)
+
+#             orders, created =Orders.objects.get_or_create(customer = request.user , cartitem=cart)
+
+
+#     return render(request, 'store/order.html',)
+
+def order(request):
+    return render(request,'store/order.html')
+
 def increment_product(request):
     data = json.loads(request.body)
     product_id = data['id']

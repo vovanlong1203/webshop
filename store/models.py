@@ -91,3 +91,19 @@ class Review(models.Model):
     def getIdProduct(self):
         return self.product.id
 
+class Orders(models.Model):
+    STATUS =(
+        ('Pending','Pending'),
+        ('Order Confirmed','Order Confirmed'),
+        ('Out for Delivery','Out for Delivery'),
+        ('Delivered','Delivered'),
+    )
+    customer=models.ForeignKey(User, on_delete=models.CASCADE,null=True)
+    cartitem =models.ForeignKey(CartItem, on_delete=models.CASCADE,null=True)
+    email = models.CharField(max_length=50,null=True)
+    address = models.CharField(max_length=500,null=True)
+    mobile = models.CharField(max_length=20,null=True)
+    order_date= models.DateField(auto_now_add=True,null=True)
+    zipcode = models.CharField(max_length=20,null=True)
+    status=models.CharField(max_length=50,null=True,choices=STATUS)
+
