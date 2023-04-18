@@ -53,11 +53,7 @@
                 </a>
               </div>
 
-              {% if messages %}
-              {% for message in messages %}
-                  <p{% if message.tags == "warning" %} class="alert alert-success "{% endif %}>{{ message }}</p>
-              {% endfor %}
-              {% endif %}
+
               <div class="d-grid">
                 <button class="btn btn-primary btn-login text-uppercase fw-bold" type="submit">Login
                   </button>

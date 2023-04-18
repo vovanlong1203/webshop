@@ -56,7 +56,7 @@
           {% csrf_token %}
           <input type="hidden" name="prod_id" id="prod_id" value="{{ product.id }}"/>
           <div class="form-group">
-            <textarea class="form-control type="text" name="comment" placeholder="Your Review"></textarea>
+            <textarea class="form-control type="text" name="comment" placeholder="Your Review" required></textarea>
           </div>
           <p class="text-uppercase font-weight-bold" style="text-align: left;">Your Rating: </p>
           <div class="form-group">

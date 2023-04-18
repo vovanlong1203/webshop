@@ -35,7 +35,7 @@ def contact_us(request):
     category = Category.objects.filter(status=0)
     product = Product.objects.filter(status=0)    
     request.session['username'] = request.session.get('username')
-
+    
     if request.session['username']:
         if request.user.is_authenticated:
             cart, created = Cart.objects.get_or_create(user=request.user, completed=False)
@@ -98,7 +98,7 @@ def category_view(request, pk):
     if request.user.is_authenticated:
         if request.session['username']:
             cart, created = Cart.objects.get_or_create(user=request.user, completed=False)
-            username = request.session['username']  
+            username = request.session['username'] 
             context = {'category':category, 'category_tmp':category_tmp, 'products': products, 'username':username,"cart": cart, }
         else:
             context = {'category':category, 'category_tmp':category_tmp, 'products': products,"cart": cart, }
@@ -135,7 +135,7 @@ def sort_decrement_product(request, pk):
     if request.user.is_authenticated:
         if request.session['username']:
             cart, created = Cart.objects.get_or_create(user=request.user, completed=False)
-            username = request.session['username']  
+            username = request.session['username']
             context = {'category':category, 'category_tmp':category_tmp, 'products': products, 'username':username,"cart": cart, }
         else:
             context = {'category':category, 'category_tmp':category_tmp, 'products': products,"cart": cart, }
@@ -183,11 +183,36 @@ def update_profile_user(request):
 def change_password_view(request):
     request.session['username'] = request.session.get('username')
     username = request.session['username']
+    username = request.user.username
     cart, created = Cart.objects.get_or_create(user=request.user, completed=False)
-    user = User.objects.get_or_create(username=username)
+    user = User.objects.get_or_create(username=request.user.username)
     category = Category.objects.filter(status=0)
     context = {'username': username,"cart":cart,'category':category}
     return render(request, 'store/changepassword.html',context)
+
+from django.contrib.auth import update_session_auth_hash
+
+def update_password_user(request):
+    request.session['username'] = request.session.get('username')
+    username = request.session['username']
+
+    if request.method == 'POST':
+        user = User.objects.get(username= request.user.username)
+        new_pass = request.POST['new_password']
+        comfirm_pass = request.POST['confirm_newpassword']
+        un = user.username
+        if new_pass != comfirm_pass:
+            messages.error(request,"Mật khẩu không khớp")
+            
+            return redirect('changepassword_view')
+        user.set_password(new_pass)
+        user.save()
+        update_session_auth_hash(request, user)
+
+        messages.success(request,"thay đổi mật khẩu thành công")
+        return redirect('changepassword_view')
+
+    return render(request, 'store/changepassword.html')
 
 def signup_view(request):
     category = Category.objects.filter(status=0)
@@ -300,14 +325,23 @@ def cart(request):
 
 
 def search_product(request):
-
-    if request.method == 'POST':
-       search = request.POST['search']
-       product=Product.objects.filter(name__contains=search)
-       conext = {'product':product}
+    category = Category.objects.filter(status=0)
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            search = request.POST['search']
+            product=Product.objects.filter(name__contains=search)
+            username = request.user.username
+            cart, created = Cart.objects.get_or_create(user=request.user, completed=False)
+        else:
+            product = Product.objects.filter(status=0)
+        conext = {'product':product,'username':username,'cart':cart,'category':category}
     else:
-        product = Product.objects.filter(status=0)
-        conext = {'product':product}
+        if request.method == 'POST':
+            search = request.POST['search']
+            product=Product.objects.filter(name__contains=search)
+        else:
+            product = Product.objects.filter(status=0)
+        conext = {'product':product,'category':category}
     
     return render(request, 'store/search_product.html',conext)
 
@@ -367,7 +401,7 @@ def profile_view(request):
             user = User.objects.get_or_create(username=username)
         context = {"cart":cart, 'items':cartitems,'username':username,'category':category}
     else:
-        context = {"cart":cart, 'items':cartitems,'category':category}
+        context = {'category':category}
 
     return render(request, 'store/profile.html',context)
 

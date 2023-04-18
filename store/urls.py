@@ -20,6 +20,7 @@ urlpatterns = [
 
      path('update_profile_user/', views.update_profile_user, name='update_profile_user'),
      path('changepassword_view/', views.change_password_view, name='changepassword_view'),
+     path('update_pass_user/', views.update_password_user, name='update_password_user'),
 
      path('add_to_cart', views.add_to_cart, name='add_to_cart'),
      path('cart/', views.cart, name='cart'),

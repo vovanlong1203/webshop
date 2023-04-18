@@ -15,12 +15,12 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-from django.contrib.messages import constants as message_constants
-MESSAGE_TAGS = {message_constants.DEBUG: 'debug',
-                message_constants.INFO: 'info',
-                message_constants.SUCCESS: 'success',
-                message_constants.WARNING: 'warning',
-                message_constants.ERROR: 'danger',}
+# from django.contrib.messages import constants as message_constants
+# MESSAGE_TAGS = {message_constants.DEBUG: 'debug',
+#                 message_constants.INFO: 'info',
+#                 message_constants.SUCCESS: 'success',
+#                 message_constants.WARNING: 'warning',
+#                 message_constants.ERROR: 'danger',}
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
@@ -28,7 +28,7 @@ MESSAGE_TAGS = {message_constants.DEBUG: 'debug',
 SECRET_KEY = 'django-insecure-v)m&u*pi(=-sbm2w-o0gktx-%lsh0!)fot@km@2z-78ticpt7f'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 ALLOWED_HOSTS = ['127.0.0.1','192.168.1.4','192.168.175.33']
 
 
