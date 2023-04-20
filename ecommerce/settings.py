@@ -25,11 +25,9 @@ ALLOWED_HOSTS = ['127.0.0.1','192.168.1.16','192.168.175.33','192.168.2.163']
 
 APPEND_SLASH = False
 
-# DEBUG = False
-# ALLOWED_HOSTS = ['*']
-# ALLOWED_HOSTS = ['192.168.175.33']
-
-# Application definition
+# session backend settings
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 
 

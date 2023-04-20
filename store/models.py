@@ -91,19 +91,31 @@ class Review(models.Model):
     def getIdProduct(self):
         return self.product.id
 
-class Orders(models.Model):
+
+class Order(models.Model):
     STATUS =(
         ('Pending','Pending'),
         ('Order Confirmed','Order Confirmed'),
         ('Out for Delivery','Out for Delivery'),
         ('Delivered','Delivered'),
     )
-    customer=models.ForeignKey(User, on_delete=models.CASCADE,null=True)
-    cartitem =models.ForeignKey(CartItem, on_delete=models.CASCADE,null=True)
-    email = models.CharField(max_length=50,null=True)
-    address = models.CharField(max_length=500,null=True)
-    mobile = models.CharField(max_length=20,null=True)
-    order_date= models.DateField(auto_now_add=True,null=True)
-    zipcode = models.CharField(max_length=20,null=True)
-    status=models.CharField(max_length=50,null=True,choices=STATUS)
+    id = models.UUIDField(default=uuid.uuid4, primary_key=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    first_name = models.CharField(max_length=255)
+    last_name = models.CharField(max_length=255)
+    email = models.EmailField(max_length=255)
+    address = models.CharField(max_length=255)
+    phone = models.CharField(max_length=255)
+    zipcode = models.CharField(max_length=255)
+    date_ordered = models.DateTimeField(auto_now_add=True)
+    status=models.CharField(max_length=50,null=True,choices=STATUS, default='Pending')
+
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order,on_delete=models.CASCADE, related_name='oderitems')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE,)
+    price = models.FloatField()
+    quantity = models.IntegerField()
+
+
+
 

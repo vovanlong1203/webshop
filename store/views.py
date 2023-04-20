@@ -285,25 +285,66 @@ def payment_view(request):
     else:
         context = {"cart":cart, 'items':cartitems,'category':category}
 
-    # return render(request, 'store/cart.html',context)
     return render(request, 'store/checkout.html', context)
 
-# def payment_fun(request):
-#     if request.user.is_authenticated:
-#         if request.method == 'POST':
-#             username = request.POST['username']
-#             address = request.POST['address']
-#             phone = request.POST['phonenumber']
-#             zipcode = request.POST['zipcode']
-#             cartitem, created =CartItem.objects.get_or_create(cart=cart, product=product)
-
-#             orders, created =Orders.objects.get_or_create(customer = request.user , cartitem=cart)
 
 
-#     return render(request, 'store/order.html',)
+def place_order(request):
+    if request.method == 'POST':
+        neworder = Order()
+        neworder.user = request.user
+        neworder.first_name = request.POST['firstname']
+        neworder.last_name = request.POST['lastname']
+        neworder.email = request.POST['email']
+        neworder.address = request.POST['address']
+        neworder.phone = request.POST['phonenumber']
+        neworder.zipcode = request.POST['zipcode']
+
+        neworder.save()
+        # cart = get_object_or_404(Cart, user=request.user)
+        cart, created = Cart.objects.get_or_create(user=request.user, completed=False)
+        for item in cart.cartitems.all():
+            order_item = OrderItem(order=neworder, product=item.product, quantity=item.quantity,price=item.product.selling_price)
+            order_item.save()
+            item.delete()
+
+    messages.success(request,"thanh cong")
+    return redirect('home')
 
 def order(request):
-    return render(request,'store/order.html')
+    if request.user.is_authenticated:
+        # orders = Order.objects.filter(user=request.user)
+        # try:
+        #     orders = Order.objects.filter(user=request.user)
+        # except Order.DoesNotExist:
+        #     orders = None
+        # # orders = Order.objects.get_or_create(user=request.user)
+        # # cart, created = Cart.objects.get_or_create(user=request.user, completed=False)
+
+        # order_items = []
+        # items = None
+        # for order in orders:
+        #     items = OrderItem.objects.filter(order=order)
+        #     order_items.append({'order': order, 'items': items})
+        username = request.session['username']
+        cart = None
+        cart, created = Cart.objects.get_or_create(user=request.user, completed=False)
+
+        try:
+            orders = Order.objects.filter(user=request.user)
+        except Order.DoesNotExist:
+            orders = None
+            
+        order_items = []
+        items = None
+        for order in orders:
+            items = OrderItem.objects.filter(order=order)
+            order_items.append({'order': order, 'items': items})
+        
+    context = {'orders': orders, 'order_items': order_items,
+               'username': username, 'cart':cart}
+    
+    return render(request,'store/order.html',context)
 
 def increment_product(request):
     data = json.loads(request.body)
@@ -459,7 +500,8 @@ def admin_login(request):
     else:
         return redirect('adminlogin')
     return render(request, 'admin/adminlogin.html')
-    
+
+
 
 @login_required(login_url='adminlogin')
 def admin_dashboard_view(request):
