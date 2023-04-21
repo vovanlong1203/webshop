@@ -1,12 +1,12 @@
 {% extends 'store/layouts/main.html' %}
 
+{% block title %}
+Home
+{% endblock title %}
+
 {% block content %}
 {% include 'store/inc/slidebar.html' %}
-{% if messages %}
-  <ul class="messages">
-      <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-  </ul>
-{% endif %}
+
     <!-- Featured Start -->
     <div class="container-fluid pt-5">
         <div class="row px-xl-5 pb-3">

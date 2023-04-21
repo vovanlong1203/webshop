@@ -1,5 +1,9 @@
 {% extends 'store/layouts/main.html' %}
 
+{% block title %}
+Order
+{% endblock title %}
+
 {% block content %}
 
 <style media="screen">
@@ -182,7 +186,7 @@
         <div class="card-body">
             {% for orderitem in item.items %}
             <ul class="row" style="margin-left:20px;margin-top:20px;">
-                <li class="col-md-4">
+                <li class="col-md-3">
                   <figure class="itemside mb-3">
                       <div class="aside"><img src="{{ orderitem.product.image.url }}" class="img-sm border"></div>
                       <figcaption class="info align-self-center">
@@ -193,10 +197,13 @@
 
                   </figure>
                 </li>
-                <li class="col-md-4">
+                <li class="col-md-3">
                     <div class="col"> <strong>Shipment Address:</strong> <br> {{orderitem.order.address}}</div>
                 </li>
-                <li class="col-md-4">
+                <li class="col-md-3">
+                    <div class="col"> <strong>Phone : </strong> <br> {{orderitem.order.phone}}</div>
+                </li>
+                <li class="col-md-3">
                     <div class="col"> <strong>Status:</strong> <br> {{orderitem.order.status}} </div> <br>
                 </li>   
                 <hr>

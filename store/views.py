@@ -300,9 +300,13 @@ def place_order(request):
         neworder.phone = request.POST['phonenumber']
         neworder.zipcode = request.POST['zipcode']
 
+        if neworder.first_name==''or neworder.last_name == ''or neworder.email == ''or neworder.address == ''or neworder.phone == '' or neworder.zipcode == '' :
+            return redirect('checkout')
+
         neworder.save()
         # cart = get_object_or_404(Cart, user=request.user)
         cart, created = Cart.objects.get_or_create(user=request.user, completed=False)
+        tmp = cart
         for item in cart.cartitems.all():
             order_item = OrderItem(order=neworder, product=item.product, quantity=item.quantity,price=item.product.selling_price)
             order_item.save()
@@ -313,19 +317,7 @@ def place_order(request):
 
 def order(request):
     if request.user.is_authenticated:
-        # orders = Order.objects.filter(user=request.user)
-        # try:
-        #     orders = Order.objects.filter(user=request.user)
-        # except Order.DoesNotExist:
-        #     orders = None
-        # # orders = Order.objects.get_or_create(user=request.user)
-        # # cart, created = Cart.objects.get_or_create(user=request.user, completed=False)
 
-        # order_items = []
-        # items = None
-        # for order in orders:
-        #     items = OrderItem.objects.filter(order=order)
-        #     order_items.append({'order': order, 'items': items})
         username = request.session['username']
         cart = None
         cart, created = Cart.objects.get_or_create(user=request.user, completed=False)

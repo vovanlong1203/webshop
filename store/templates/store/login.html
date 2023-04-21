@@ -35,11 +35,11 @@
             <form method="post" action="/login">
               {% csrf_token %}
               <div class="form-floating mb-3">
-                <input type="text" class="form-control" name="username" id="floatingInput" placeholder="username">
+                <input type="text" class="form-control" name="username" id="floatingInput" placeholder="username" required>
                 <label for="floatingInput">UserName</label>
               </div>
               <div class="form-floating mb-3">
-                <input type="password" class="form-control" name="pass1" id="floatingPassword" placeholder="Password">
+                <input type="password" class="form-control" name="pass1" id="floatingPassword" placeholder="Password" required>
                 <label for="floatingPassword">Password</label>
               </div>
 
