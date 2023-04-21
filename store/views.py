@@ -308,7 +308,7 @@ def place_order(request):
         cart, created = Cart.objects.get_or_create(user=request.user, completed=False)
         tmp = cart
         for item in cart.cartitems.all():
-            order_item = OrderItem(order=neworder, product=item.product, quantity=item.quantity,price=item.product.selling_price)
+            order_item = OrderItem(order=neworder, product=item.product, quantity=item.quantity,price=item.product.selling_price, total_price= item.price)
             order_item.save()
             item.delete()
 
