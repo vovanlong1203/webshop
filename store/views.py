@@ -560,3 +560,33 @@ def category_view_admin(request):
 @login_required(login_url='adminlogin')
 def add_category_view(request):
     return render(request, 'admin/add_category_view.html')
+
+@login_required(login_url='adminlogin')
+def cart_view_admin(request):
+    carts= Cart.objects.all()
+    context = {'carts':carts}
+    return render(request, 'admin/view_cart.html',context)
+
+@login_required(login_url='adminlogin')
+def cartitem_view_admin(request):
+    cartitems= CartItem.objects.all()
+    context = {'cartitems':cartitems}
+    return render(request, 'admin/view_cartitem.html',context)
+
+@login_required(login_url='adminlogin')
+def review_view_admin(request):
+    reviews= Review.objects.all()
+    context = {'reviews':reviews}
+    return render(request, 'admin/view_review.html',context)
+
+@login_required(login_url='adminlogin')
+def order_view_admin(request):
+    orders= Order.objects.all()
+    context = {'orders':orders}
+    return render(request, 'admin/view_order.html',context)
+
+@login_required(login_url='adminlogin')
+def orderitem_view_admin(request):
+    orderitems= OrderItem.objects.all()
+    context = {'orderitems':orderitems}
+    return render(request, 'admin/view_orderitem.html',context)

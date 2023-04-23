@@ -50,4 +50,10 @@ urlpatterns = [
 
      path('category_view_admin/',views.category_view_admin, name='category_view_admin'),
      path('add_category_view/', views.add_category_view, name='add_category_view'),
+
+     path('cart_view_admin/',views.cart_view_admin, name='cart_view_admin'),
+     path('cartitem_view_admin/',views.cartitem_view_admin, name='cartitem_view_admin'),
+     path('review_view_admin/',views.review_view_admin, name='review_view_admin'),
+     path('order_view_admin/',views.order_view_admin, name='order_view_admin'),
+     path('orderitem_view_admin/',views.orderitem_view_admin, name='orderitem_view_admin'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

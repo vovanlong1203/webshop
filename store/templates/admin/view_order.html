@@ -42,33 +42,39 @@
 
 
 
-<div class="container">
+<div class="container vh-100">
   <div class="panel panel-primary">
     <div class="panel-heading">
-      <h6 class="panel-title">Total Product List</h6>
+      <h6 class="panel-title">Cart List</h6>
     </div>
     <table class="table table-hover" id="dev-table">
       <thead>
         <tr>
-          <th>Name</th>
-          <th>Image</th>
-          <th>Description</th>
+          <th>Id </th>
+          <th>User</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Email</th>
+          <th>Address</th>
+          <th>Phone</th>
+          <th>Zipcode</th>
           <th>Status</th>
-          <th>Update</th>
-          <th>Delete</th>
+
         </tr>
       </thead>
-      {% for p in categorys %}
+      {% for p in orders %}
       {% if p %}
 
       <tr>
-        <td> {{p.name}}</td>
-        <td> <img src="{{  p.image.url  }}" alt="Profile Pic" height="40px" width="40px" /></td>
-        <td>{{p.description}}</td>
+        <td> {{p.id}}</td>
+        <td>{{ p.user.username }}</td>
+        <td>{{p.first_name}}</td>
+        <td>{{p.last_name}}</td>
+        <td>{{p.email}}</td>
+        <td>{{p.address}}</td>
+        <td>{{p.phone}}</td>
+        <td>{{p.zipcode}}</td>
         <td>{{p.status}}</td>
-
-        <td><a class="btn btn-primary btn-xs" href=""><span class="glyphicon glyphicon-edit"></span></a></td>
-        <td><a class="btn btn-danger btn-xs" href=""><span class="glyphicon glyphicon-trash"></span></a></td>
 
       </tr>
       {%else%}
@@ -80,9 +86,7 @@
   </div>
 </div>
 <!-- add product floating button -->
-<a href="{% url 'add_category_view' %}" class="float">
-<i class="fa fa-plus my-float"></i>
-</a>
+
 
 
 {% endblock content %}

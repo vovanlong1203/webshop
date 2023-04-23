@@ -42,33 +42,29 @@
 
 
 
-<div class="container">
+<div class="container vh-100">
   <div class="panel panel-primary">
     <div class="panel-heading">
-      <h6 class="panel-title">Total Product List</h6>
+      <h6 class="panel-title">Cart List</h6>
     </div>
     <table class="table table-hover" id="dev-table">
       <thead>
         <tr>
-          <th>Name</th>
-          <th>Image</th>
-          <th>Description</th>
-          <th>Status</th>
-          <th>Update</th>
-          <th>Delete</th>
+          <th>User</th>
+          <th>Product</th>
+          <th>Comment</th>
+          <th>Rate</th>
+
         </tr>
       </thead>
-      {% for p in categorys %}
+      {% for p in reviews %}
       {% if p %}
 
       <tr>
-        <td> {{p.name}}</td>
-        <td> <img src="{{  p.image.url  }}" alt="Profile Pic" height="40px" width="40px" /></td>
-        <td>{{p.description}}</td>
-        <td>{{p.status}}</td>
-
-        <td><a class="btn btn-primary btn-xs" href=""><span class="glyphicon glyphicon-edit"></span></a></td>
-        <td><a class="btn btn-danger btn-xs" href=""><span class="glyphicon glyphicon-trash"></span></a></td>
+        <td> {{p.user.username}}</td>
+        <td>{{ p.product.name }}</td>
+        <td>{{p.comment}}</td>
+        <td>{{p.rate}}</td>
 
       </tr>
       {%else%}
@@ -80,9 +76,7 @@
   </div>
 </div>
 <!-- add product floating button -->
-<a href="{% url 'add_category_view' %}" class="float">
-<i class="fa fa-plus my-float"></i>
-</a>
+
 
 
 {% endblock content %}

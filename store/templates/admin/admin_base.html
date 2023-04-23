@@ -93,7 +93,12 @@
           <a href="{% url 'customer_view' %}" class="nav-item nav-link">Customer</a>
           <a href="{% url 'category_view_admin' %}" class="nav-item nav-link">Category</a>
           <a href="{% url 'product_view' %}" class="nav-item nav-link">Products</a>
-          <a href="/view-feedback" class="nav-item nav-link">Feedback</a>
+          <a href="{% url 'cart_view_admin' %}" class="nav-item nav-link">Cart</a>
+          <a href="{% url 'cartitem_view_admin' %}" class="nav-item nav-link">CartItem</a>
+          <a href="{% url 'review_view_admin' %}" class="nav-item nav-link">Review</a>
+          <a href="{% url 'order_view_admin' %}" class="nav-item nav-link">Order</a>
+          <a href="{% url 'orderitem_view_admin' %}" class="nav-item nav-link">OrderItem</a>
+          <a href="" class="nav-item nav-link">Feedback</a>
         </div>
 
         <div class="navbar-nav navbar-right">
@@ -110,7 +115,6 @@
   {% endblock content %}
 
 
-  {% include 'store/inc/footer.html' %}
 
 </body>
 </html>
