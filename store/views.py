@@ -18,33 +18,34 @@ def home(request):
     product = Product.objects.filter(status=0)
     product_trend = Product.objects.filter(trending=1)
     product = random.sample(list(product),20)
-    request.session['username'] = request.session.get('username')
-    
-    if request.session['username']:
-        if request.user.is_authenticated:
-            cart, created = Cart.objects.get_or_create(user=request.user, completed=False)
+
+
+    if request.user.is_authenticated:
+        cart, created = Cart.objects.get_or_create(user=request.user, completed=False)
     # Lấy username của người dùng
-        username = request.session['username']
+        username = request.user.username
         conext = {'category':category, 'product':product,'username':username,"cart": cart,"product_trend":product_trend}
     else:
         conext = {'category':category, 'product':product,"product_trend":product_trend}
+
     return render(request, 'store/index.html',conext)
 
 
 def contact_us(request):
     category = Category.objects.filter(status=0)
     product = Product.objects.filter(status=0)    
-    request.session['username'] = request.session.get('username')
     
-    if request.session['username']:
-        if request.user.is_authenticated:
-            cart, created = Cart.objects.get_or_create(user=request.user, completed=False)
+
+    if request.user.is_authenticated:
+        cart, created = Cart.objects.get_or_create(user=request.user, completed=False)
 
     # Lấy username của người dùng
-        username = request.session['username']
+        # username = request.session['username']
+        username = request.user.username
         conext = {'category':category, 'product':product,'username':username,"cart": cart}
     else:
         conext = {'category':category, 'product':product,}
+
     return render(request, 'store/contactus.html',conext)
 
 
@@ -53,23 +54,18 @@ def about_us(request):
     product = Product.objects.filter(status=0)
     request.session['username'] = request.session.get('username')
 
-    if request.session['username']:
-        if request.user.is_authenticated:
-            cart, created = Cart.objects.get_or_create(user=request.user, completed=False)
+    if request.user.is_authenticated:
+        cart, created = Cart.objects.get_or_create(user=request.user, completed=False)
 
     # Lấy username của người dùng
-        username = request.session['username']
+        # username = request.session['username']
+        username = request.user.username
         conext = {'category':category, 'product':product,'username':username,"cart": cart}
     else:
         conext = {'category':category, 'product':product,}
     return render(request, 'store/aboutus.html',conext)
 
 
-def collection(request):
-    category = Category.objects.filter(status=0)
-    product = Product.objects.filter(status=0)
-    conext = {'category':category, 'product':product}
-    return render(request, 'store/collection.html',{'category':category})
 
 
 def productdetail(request,pk):
@@ -78,13 +74,12 @@ def productdetail(request,pk):
     product_review = Product.objects.get(id = pk)
     reviews = Review.objects.filter(product=product_review)    
     request.session['username'] = request.session.get('username')
-    if request.session['username']:
-        if request.user.is_authenticated:
-            cart, created = Cart.objects.get_or_create(user=request.user, completed=False)
-            username = request.session['username']  
-            context =   {'product': product,"cart": cart,'reviews': reviews,'username':username,'category':category}
-        else:
-            context = {'product': product,'reviews': reviews,'category':category}
+
+    if request.user.is_authenticated:
+        cart, created = Cart.objects.get_or_create(user=request.user, completed=False)
+        # username = request.session['username']  
+        username = request.user.username
+        context =   {'product': product,"cart": cart,'reviews': reviews,'username':username,'category':category}
     else:
         context = {'product': product,'reviews': reviews,'category':category}
     return render(request, 'store/product_detail.html', context)
@@ -95,21 +90,22 @@ def category_view(request, pk):
     category = Category.objects.all()
     category_tmp = Category.objects.get(id=pk)
     products = Product.objects.filter(category= category_tmp)
+
     if request.user.is_authenticated:
-        if request.session['username']:
-            cart, created = Cart.objects.get_or_create(user=request.user, completed=False)
-            username = request.session['username'] 
-            context = {'category':category, 'category_tmp':category_tmp, 'products': products, 'username':username,"cart": cart, }
-        else:
-            context = {'category':category, 'category_tmp':category_tmp, 'products': products,"cart": cart, }
+        cart, created = Cart.objects.get_or_create(user=request.user, completed=False)
+        # username = request.session['username'] 
+        username = request.user.username
+        context = {'category':category, 'category_tmp':category_tmp, 'products': products, 'username':username,"cart": cart, }
+
     else:
         context = {'category':category, 'category_tmp':category_tmp, 'products': products,}
 
-    return render(request, 'store/category.html',context)
 
+    return render(request, 'store/category.html',context)
+    
 
 def sort_increment_product(request, pk):
-    request.session['username'] = request.session.get('username')
+    request.session['username'] = request.user.username
     category = Category.objects.all()
     category_tmp = Category.objects.get(id=pk)
     products = Product.objects.filter(category= category_tmp)
@@ -127,7 +123,7 @@ def sort_increment_product(request, pk):
     return render(request, 'store/category.html',context)
 
 def sort_decrement_product(request, pk):
-    request.session['username'] = request.session.get('username')
+    request.session['username'] = request.user.username
     category = Category.objects.all()
     category_tmp = Category.objects.get(id=pk)
     products = Product.objects.filter(category= category_tmp)
@@ -164,6 +160,8 @@ def login_view(request):
             return redirect('home')
         else:
             messages.error(request, "Bad Credentials!!")
+            conext = {'message': 'Bad Credentials!!'}
+            return render(request, 'store/login.html',conext)
             return redirect('login')
     return render(request, 'store/login.html',{'category':category})
 
@@ -181,7 +179,7 @@ def update_profile_user(request):
     return redirect('profile')
 
 def change_password_view(request):
-    request.session['username'] = request.session.get('username')
+    request.session['username'] = request.user.username
     username = request.session['username']
     username = request.user.username
     cart, created = Cart.objects.get_or_create(user=request.user, completed=False)
@@ -193,7 +191,7 @@ def change_password_view(request):
 from django.contrib.auth import update_session_auth_hash
 
 def update_password_user(request):
-    request.session['username'] = request.session.get('username')
+    request.session['username'] = request.user.username
     username = request.session['username']
 
     if request.method == 'POST':
@@ -228,15 +226,18 @@ def signup_view(request):
 
         if User.objects.filter(username=username):
             messages.error(request, "Username already exist! Please try some other username.")
-            return redirect('home')
+            conext = {'message': 'Username already exist! Please try some other username.'}
+            return render(request,'store/signup.html',conext)
 
         if User.objects.filter(email=email).exists():
             messages.error(request, "Email Already Registered!!")
-            return redirect('home')
+            conext = {'message': 'Email Already Registered!!.'}
+            return render(request,'store/signup.html',conext)
 
         if pass1 != pass2:
             messages.error(request, "Passwords didn't matched!!")
-            return redirect('home')
+            conext = {'message': "Passwords didn't matched!!"}
+            return render(request,'store/signup.html',conext)
         
         myuser = User.objects.create_user(username,email,pass1)
         myuser.first_name = firstname
@@ -274,7 +275,7 @@ def payment_view(request):
     cart =None
     cartitems = []
     category = Category.objects.filter(status=0)
-    request.session['username'] = request.session.get('username')
+    request.session['username'] = request.user.username
     if request.session['username']:
         if request.user.is_authenticated:
             user = User.objects.get(id = request.user.id )
@@ -316,9 +317,11 @@ def place_order(request):
     return redirect('home')
 
 def order(request):
+    category = Category.objects.filter(status=0)
     if request.user.is_authenticated:
 
         username = request.session['username']
+        username = request.user.username
         cart = None
         cart, created = Cart.objects.get_or_create(user=request.user, completed=False)
 
@@ -334,7 +337,7 @@ def order(request):
             order_items.append({'order': order, 'items': items})
         
     context = {'orders': orders, 'order_items': order_items,
-               'username': username, 'cart':cart}
+               'username': username, 'cart':cart,'category':category}
     
     return render(request,'store/order.html',context)
 
@@ -379,12 +382,12 @@ def cart(request):
     cartitems = []
     category = Category.objects.filter(status=0)
 
-    request.session['username'] = request.session.get('username')
-    if request.session['username']:
-        if request.user.is_authenticated:
-            cart, created = Cart.objects.get_or_create(user=request.user, completed=False)
-            cartitems = cart.cartitems.all()
-            username = request.session['username']
+    request.session['username'] = request.user.username
+
+    if request.user.is_authenticated:
+        cart, created = Cart.objects.get_or_create(user=request.user, completed=False)
+        cartitems = cart.cartitems.all()
+        username = request.session['username']
         context = {"cart":cart, 'items':cartitems,'username':username,'category':category}
     else:
         context = {"cart":cart, 'items':cartitems,'category':category}
@@ -460,16 +463,14 @@ def minus_item(request,pk):
 
 def profile_view(request):
     category = Category.objects.filter(status=0)
-    request.session['username'] = request.session.get('username')
-    if request.session['username']:
-        if request.user.is_authenticated:
-            cart, created = Cart.objects.get_or_create(user=request.user, completed=False)
-            cartitems = cart.cartitems.all()
-            username = request.session['username']
-            user = User.objects.get_or_create(username=username)
-        context = {"cart":cart, 'items':cartitems,'username':username,'category':category}
-    else:
-        context = {'category':category}
+
+    if request.user.is_authenticated:
+        cart, created = Cart.objects.get_or_create(user=request.user, completed=False)
+        cartitems = cart.cartitems.all()
+        username = request.user.username
+        print("username : ",username)
+        user = User.objects.get_or_create(username=username)
+    context = {"cart":cart, 'items':cartitems,'username':username,'category':category}
 
     return render(request, 'store/profile.html',context)
 

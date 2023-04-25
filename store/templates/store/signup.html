@@ -95,7 +95,9 @@
                           I agree all statements in <a href="#!">Terms of service</a>
                         </label>
                       </div>
-    
+                      {% if message %}
+                      <div class="text-center">{{ message }}</div>
+                    {% endif %}
                       <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
                         <button type="submit" class="btn btn-primary btn-lg">Register</button>
                       </div>

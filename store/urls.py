@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 from . import views
 from django.conf.urls.static import static
 from django.conf import settings
@@ -6,12 +6,14 @@ from django.contrib.auth.views import LoginView,LogoutView
 urlpatterns = [
      path('home/', views.home, name='home'),
      path('', views.home, name='home'),
-     path('collection/',views.collection,name='collection'),
      path('contactus/',views.contact_us, name='contactus'),
      path('aboutus/',views.about_us, name='aboutus'),
      path('login',views.login_view, name='login'),
      path('signup/',views.signup_view, name='signup'),
      path('signout/',views.signout_view , name='signout'),
+     path('social-auth/', include('social_django.urls', namespace='social')),
+
+
      path('products/<int:pk>/', views.productdetail, name='productdetail'),
      path('category/<int:pk>/', views.category_view, name='category_view'),
      path('category_sort_in/<int:pk>/', views.sort_increment_product, name='category_sort_in'),
