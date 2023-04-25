@@ -304,9 +304,10 @@ def place_order(request):
         if neworder.first_name==''or neworder.last_name == ''or neworder.email == ''or neworder.address == ''or neworder.phone == '' or neworder.zipcode == '' :
             return redirect('checkout')
 
+        cart, created = Cart.objects.get_or_create(user=request.user, completed=False)
+        neworder.total = cart.total_price
         neworder.save()
         # cart = get_object_or_404(Cart, user=request.user)
-        cart, created = Cart.objects.get_or_create(user=request.user, completed=False)
         tmp = cart
         for item in cart.cartitems.all():
             order_item = OrderItem(order=neworder, product=item.product, quantity=item.quantity,price=item.product.selling_price, total_price= item.price)

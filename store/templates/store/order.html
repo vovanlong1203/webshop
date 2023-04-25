@@ -191,8 +191,8 @@ Order
                       <div class="aside"><img src="{{ orderitem.product.image.url }}" class="img-sm border"></div>
                       <figcaption class="info align-self-center">
 
-                          <p class="title"><strong>Name : </strong>{{orderitem.product.name}} <br> <strong>Price : </strong>{{orderitem.price |floatformat:"g"}}</p> <span class="text-muted"><strong>Quantity : </strong>{{orderitem.quantity}} </span> <br>
-                          <span class="text-muted"><strong>Total  : </strong>{{orderitem.total_price |floatformat:"g"}} </span>
+                          <p class="title"><strong>Name : </strong>{{orderitem.product.name}} <br> <strong>Price : </strong>{{orderitem.price |floatformat:"g"}} đ</p> <span class="text-muted"><strong>Quantity : </strong>{{orderitem.quantity}} </span> <br>
+                          <span class="text-muted"><strong>Total  : </strong>{{orderitem.total_price |floatformat:"g"}} đ</span>
                       </figcaption>
                   </figure>
                 </li>
@@ -237,6 +237,9 @@ Order
                 <div class="step active"> <span class="icon"> <i style="padding-top:5px; ;" class="fas fa-truck"></i> </span> <span class="text"> On the way </span> </div>
                 <div class="step active"> <span class="icon"> <i style="padding-top:5px; ;" class="fas fa-home"></i> </span> <span class="text">Delivered</span> </div>
                 {%endif%}
+            </div>
+            <div class="">
+                Total: {{ item.order.total |floatformat:"g"}} đ
             </div>
         </div>
     </article><br>

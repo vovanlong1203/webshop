@@ -109,6 +109,7 @@ class Order(models.Model):
     zipcode = models.CharField(max_length=255)
     date_ordered = models.DateTimeField(auto_now_add=True)
     status=models.CharField(max_length=50,null=True,choices=STATUS, default='Pending')
+    total = models.FloatField()
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order,on_delete=models.CASCADE, related_name='oderitems')
