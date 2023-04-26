@@ -106,7 +106,6 @@ class Order(models.Model):
     email = models.EmailField(max_length=255)
     address = models.CharField(max_length=255)
     phone = models.CharField(max_length=255)
-    zipcode = models.CharField(max_length=255)
     date_ordered = models.DateTimeField(auto_now_add=True)
     status=models.CharField(max_length=50,null=True,choices=STATUS, default='Pending')
     total = models.FloatField()

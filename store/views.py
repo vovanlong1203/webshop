@@ -9,9 +9,11 @@ from django.http import JsonResponse
 import json
 from django.shortcuts import get_object_or_404
 import random
+import plotly.graph_objs as go
+from django.db.models import Sum
+from django.db.models.functions import TruncMonth
+
 # Create your views here.
-
-
 
 def home(request):
     category = Category.objects.filter(status=0)
@@ -299,9 +301,9 @@ def place_order(request):
         neworder.email = request.POST['email']
         neworder.address = request.POST['address']
         neworder.phone = request.POST['phonenumber']
-        neworder.zipcode = request.POST['zipcode']
+        # neworder.zipcode = request.POST['zipcode']
 
-        if neworder.first_name==''or neworder.last_name == ''or neworder.email == ''or neworder.address == ''or neworder.phone == '' or neworder.zipcode == '' :
+        if neworder.first_name==''or neworder.last_name == ''or neworder.email == ''or neworder.address == ''or neworder.phone == '':
             return redirect('checkout')
 
         cart, created = Cart.objects.get_or_create(user=request.user, completed=False)
@@ -501,8 +503,52 @@ def admin_login(request):
 def admin_dashboard_view(request):
     customercount= User.objects.all().count()
     productcount= Product.objects.all().count()
-    context = {'customercount': customercount, 'productcount': productcount}
-    return render(request, 'admin/admin_dashboard.html',context)
+    ordercount = Order.objects.all().count()
+    order= Order.objects.all()
+
+    orders = Order.objects.all().order_by('date_ordered')
+    months = [o.date_ordered.strftime('%Y-%m') for o in orders]
+    amounts = [o.total for o in orders]
+    data = [
+        go.Bar(
+            x=months,
+            y=amounts,
+        )
+    ]
+    layout = go.Layout(
+        title='Monthly Order Statistics',
+        xaxis=dict(title='Month'),
+        yaxis=dict(title='Total Amount'),
+    )
+    fig = go.Figure(data=data, layout=layout)
+    chart_div = fig.to_html(full_html=False)
+    
+    
+    context = {'customercount': customercount, 'productcount': productcount,'ordercount': ordercount, 'chart_div':chart_div}
+
+    orders = Order.objects.annotate(month=TruncMonth('date_ordered')).values('month').annotate(total_amount=Sum('total')).order_by('month')
+    print("orders: ",orders)
+    months = [str(o['month'])[:7] for o in orders]
+    amounts = [o['total_amount'] for o in orders]
+
+    context = {'customercount': customercount, 'productcount': productcount,'ordercount': ordercount, 'chart_div':chart_div,'months':months, 'amounts':amounts,"order":order}
+
+    return render(request, 'admin/admin_dashboard.html', context)
+
+def sales_chart(request):
+    orders = Order.objects.annotate(month=TruncMonth('date_ordered')).values('month').annotate(total_amount=Sum('total')).order_by('month')
+    print("orders: ",orders)
+    months = [str(o['month'])[:7] for o in orders]
+    print("month: ",months)
+    amounts = [o['total_amount'] for o in orders]
+    print("amounts: ",amounts)
+
+    return JsonResponse(data={
+    'labels': months,
+    'values': amounts
+})
+
+
 
 @login_required(login_url='adminlogin')
 def logout_view(request):

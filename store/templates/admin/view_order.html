@@ -59,6 +59,7 @@
           <th>Phone</th>
           <th>Zipcode</th>
           <th>Status</th>
+          <th>Total</th>
 
         </tr>
       </thead>
@@ -75,6 +76,7 @@
         <td>{{p.phone}}</td>
         <td>{{p.zipcode}}</td>
         <td>{{p.status}}</td>
+        <td>{{p.total|floatformat:"g"}}</td>
 
       </tr>
       {%else%}

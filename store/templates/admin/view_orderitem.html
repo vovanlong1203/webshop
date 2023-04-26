@@ -65,9 +65,9 @@
       <tr>
         <td> {{p.order.id}}</td>
         <td>{{ p.product.name }}</td>
-        <td>{{p.price}}</td>
+        <td>{{p.price|floatformat:"g"}}</td>
         <td>{{p.quantity}}</td>
-        <td>{{p.total_price}}</td>
+        <td>{{p.total_price|floatformat:"g"}}</td>
 
       </tr>
       {%else%}
