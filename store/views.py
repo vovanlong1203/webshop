@@ -638,3 +638,31 @@ def orderitem_view_admin(request):
     orderitems= OrderItem.objects.all()
     context = {'orderitems':orderitems}
     return render(request, 'admin/view_orderitem.html',context)
+
+@login_required(login_url='adminlogin')
+def view_update_category(request,pk):
+    category = Category.objects.get(id=pk)
+    context = {'category':category}    
+    return render(request, 'admin/view_update_category.html',context)
+
+
+
+@login_required(login_url='adminlogin')
+def view_update_order(request,pk):
+    status_list = [status[0] for status in Order.STATUS]
+
+    print("in ra ",status_list)
+    order = Order.objects.get(id=pk)
+    context = {'order':order,'status_list':status_list}
+    return render(request, 'admin/view_update_order.html',context)
+
+@login_required(login_url='adminlogin')
+def update_status_order(request):
+    if request.method == 'POST':
+        id_order = request.POST['id_order']
+        status = request.POST['status']
+        order = Order.objects.get(id=id_order)
+        order.status = status
+        order.save()
+        return redirect('order_view_admin')
+    return render(request, 'admin/order_view_admin.html')

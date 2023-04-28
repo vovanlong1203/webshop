@@ -59,4 +59,9 @@ urlpatterns = [
      path('order_view_admin/',views.order_view_admin, name='order_view_admin'),
      path('orderitem_view_admin/',views.orderitem_view_admin, name='orderitem_view_admin'),
      path('sales_chart/', views.sales_chart, name='sales_chart'),
+     
+     path('view_update_category/<int:pk>', views.view_update_category, name='view_update_category'),
+
+     path('view_update_order/<str:pk>',views.view_update_order, name='view_update_order'),
+     path('update_status_order/', views.update_status_order, name='update_status_order'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

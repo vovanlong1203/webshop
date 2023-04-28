@@ -67,7 +67,7 @@
         <td>{{p.description}}</td>
         <td>{{p.status}}</td>
 
-        <td><a class="btn btn-primary btn-xs" href=""><span class="glyphicon glyphicon-edit"></span></a></td>
+        <td><a class="btn btn-primary btn-xs" href="{% url 'view_update_category' p.id %}"><span class="glyphicon glyphicon-edit"></span></a></td>
         <td><a class="btn btn-danger btn-xs" href=""><span class="glyphicon glyphicon-trash"></span></a></td>
 
       </tr>
@@ -80,7 +80,7 @@
   </div>
 </div>
 <!-- add product floating button -->
-<a href="{% url 'add_category_view' %}" class="float">
+<a href="{% url 'add_category_view'  %}" class="float">
 <i class="fa fa-plus my-float"></i>
 </a>
 

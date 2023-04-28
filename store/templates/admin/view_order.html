@@ -57,9 +57,10 @@
           <th>Email</th>
           <th>Address</th>
           <th>Phone</th>
-          <th>Zipcode</th>
           <th>Status</th>
           <th>Total</th>
+          <th>Update</th>
+
 
         </tr>
       </thead>
@@ -74,9 +75,10 @@
         <td>{{p.email}}</td>
         <td>{{p.address}}</td>
         <td>{{p.phone}}</td>
-        <td>{{p.zipcode}}</td>
         <td>{{p.status}}</td>
         <td>{{p.total|floatformat:"g"}}</td>
+        <td><a class="btn btn-primary btn-xs" href="{% url 'view_update_order' p.id %}"><span class="glyphicon glyphicon-edit"></span></a></td>
+
 
       </tr>
       {%else%}
