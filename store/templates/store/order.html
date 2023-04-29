@@ -173,11 +173,11 @@ Order
 
 <!-- <h3 style="text-align:center; margin-top: 40px">Thank You For Your Order  <strong>{{request.user}}</strong> !</h3> <br><br> -->
 
-{% if orders != None %}
+{% if orders  %}
 
 {% for item in order_items %}
 
-<div class="container mt-5 bg-primary">
+<div class="container mt-5 bg-primary ">
     <h2>Đơn hàng {{ item.order.id }} - {{ item.order.date_ordered }}</h2>
     <header class="card-header" style="text-align:center;"> My Orders / Tracking </header>
 
@@ -249,9 +249,10 @@ Order
 <br><br><br><br><br>
 
 {% include 'store/inc/footer.html' %}
-{%else%}
-
-<h1 class="text-center">Bạn chưa có đơn hàng</h1>
+{% else %}
+<div class="container vh-100">
+    <h1 class="text-center">Bạn chưa có đơn hàng</h1>
+</div>
 {% include 'store/inc/footer.html' %}
 
 {% endif %}

@@ -87,20 +87,24 @@ def productdetail(request,pk):
     return render(request, 'store/product_detail.html', context)
 
 
+
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
 def category_view(request, pk):
     request.session['username'] = request.session.get('username')
     category = Category.objects.all()
     category_tmp = Category.objects.get(id=pk)
     products = Product.objects.filter(category= category_tmp)
 
+
     if request.user.is_authenticated:
         cart, created = Cart.objects.get_or_create(user=request.user, completed=False)
         # username = request.session['username'] 
         username = request.user.username
-        context = {'category':category, 'category_tmp':category_tmp, 'products': products, 'username':username,"cart": cart, }
+        context = {'category':category, 'category_tmp':category_tmp, 'products': products, 'username':username,"cart": cart,}
 
     else:
-        context = {'category':category, 'category_tmp':category_tmp, 'products': products,}
+        context = {'category':category, 'category_tmp':category_tmp, 'products': products, }
 
 
     return render(request, 'store/category.html',context)
@@ -323,7 +327,7 @@ def order(request):
     category = Category.objects.filter(status=0)
     if request.user.is_authenticated:
 
-        username = request.session['username']
+        # username = request.session['username']
         username = request.user.username
         cart = None
         cart, created = Cart.objects.get_or_create(user=request.user, completed=False)
