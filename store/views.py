@@ -569,6 +569,98 @@ def product_view(request):
     context = {'products':products}
     return render(request, 'admin/view_products.html',context)
 
+def add_product_view(request):
+    cat = Category.objects.all()
+    category_list = [c.name for c in cat]
+    print(category_list)
+    context = {'category_list':category_list}
+    return render(request, 'admin/add_product_view.html',context)
+
+def add_product_admin(request):
+    if request.method == 'POST':
+        product = Product()
+        category = request.POST['category']
+        category_tmp = Category.objects.get(name=category)
+        name =  request.POST['name']
+        image = request.FILES['image'] if 'image' in request.FILES else None
+        if image:
+            product.image = image
+        quantity = request.POST['quantity']
+        description = request.POST['description']
+        original_price = request.POST['original_price']
+        selling_price = request.POST['selling_price']
+        status = request.POST.get('status')
+        if status :
+            status = 1
+        else:
+            status = 0
+        trending = request.POST.get('trending')
+        if trending :
+            trending = 1
+        else:
+            trending = 0
+        product.category = category_tmp
+        product.name = name
+        product.quantity = quantity
+        product.description = description
+        product.original_price = original_price
+        product.selling_price =selling_price
+        product.status = status
+        product.trending = trending
+        print("product: ", product)
+        product.save()
+        return redirect('product_view')
+    return render(request, 'admin/view_products.html')
+        
+
+def update_product_view(request, pk):
+    product = Product.objects.get(id=pk)
+    category_list = [c.name for c in Category.objects.all()]
+    context = {'product': product,'category_list':category_list}
+    return render(request, 'admin/view_update_product.html',context)
+
+def update_product(request):
+    if request.method == 'POST':
+        id_product = request.POST['id_product']
+        product = Product.objects.get(id=id_product)
+        category = request.POST['category']
+        category_tmp = Category.objects.get(name=category)
+        name =  request.POST['name']
+        image = request.FILES['image'] if 'image' in request.FILES else None
+        if image:
+            product.image = image
+        quantity = request.POST['quantity']
+        description = request.POST['description']
+        original_price = request.POST['original_price']
+        selling_price = request.POST['selling_price']
+        status = request.POST.get('status')
+        if status :
+            status = 1
+        else:
+            status = 0
+        trending = request.POST.get('trending')
+        if trending :
+            trending = 1
+        else:
+            trending = 0
+        product.category = category_tmp
+        product.name = name
+        product.quantity = quantity
+        product.description = description
+        product.original_price = original_price
+        product.selling_price =selling_price
+        product.status = status
+        product.trending = trending
+        print("product: ", product)
+        product.save()
+        return redirect('product_view')
+    return render(request, 'admin/view_products.html')
+
+def delete_product(request, pk):
+    product = Product.objects.get(id=pk)
+    product.delete()
+    return redirect('product_view')
+
 @login_required(login_url='adminlogin')
 def customer_update_view(request,pk):
     user = User.objects.get(id=pk)
@@ -645,13 +737,64 @@ def view_update_category(request,pk):
     context = {'category':category}    
     return render(request, 'admin/view_update_category.html',context)
 
+@login_required(login_url='adminlogin')
+def add_category(request):
+    if request.method == 'POST':
+        name = request.POST['name']
+        image = request.FILES['image'] if 'image' in request.FILES else None
+        description = request.POST['description']
+        status = request.POST.get('status')
+        if status:
+            status = 1
+        else:
+            status = 0
+        category = Category()
+        category.name = name
+        category.description = description
+        print("Image: ", image)
+        if image:
+            category.image = image
+        category.status = status
+        category.save()
+        return redirect('category_view_admin')
+    return render(request, 'admin/view_category.html')
+
+@login_required(login_url='adminlogin')
+def update_category(request):
+    if request.method == 'POST':
+        id_category = request.POST['id_category']
+        category = Category.objects.get(id=id_category)
+        name = request.POST['name']
+        image = request.POST['image']
+        print("image: ",image)
+        image = request.FILES['image'] if 'image' in request.FILES else None
+        if image:
+            category.image = image
+        print("image: ", image)
+        description = request.POST['description']
+        status = request.POST.get('status')
+        if status :
+            status = 1
+        else:
+            status = 0
+        category.name = name
+        category.description = description
+        category.status = status
+        category.save()
+        return redirect('category_view_admin')
+    return render(request, 'admin/view_category.html')
+
+def delete_category(request, pk):
+    category = Category.objects.get(id=pk)
+    category.delete()
+    return redirect('category_view_admin')
+
 
 
 @login_required(login_url='adminlogin')
 def view_update_order(request,pk):
     status_list = [status[0] for status in Order.STATUS]
 
-    print("in ra ",status_list)
     order = Order.objects.get(id=pk)
     context = {'order':order,'status_list':status_list}
     return render(request, 'admin/view_update_order.html',context)

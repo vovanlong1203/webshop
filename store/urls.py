@@ -45,13 +45,22 @@ urlpatterns = [
      path('admin_dashboard/', views.admin_dashboard_view, name='admin_dashboard'),
      path('logoutadmin/',views.logout_view, name='logoutadmin'),
      path('customer_view/',views.customer_view, name='customer_view'),
+     
      path('product_view/',views.product_view, name='product_view'),
+     path('add_product_view/', views.add_product_view, name='add_product_view'),
+     path('add_product/', views.add_product_admin, name='add_product'),
+     path('update_product_view/<int:pk>', views.update_product_view, name='update_product_view'),
+     path('update_product/', views.update_product, name='update_product'),
+     path('delete_product/<int:pk>', views.delete_product, name='delete_product'),
+
      path('customer_update_view/<int:pk>',views.customer_update_view, name='customer_update_view'),
      path('update_customer/',views.update_customer, name='update_customer'),
      path('delete_customer/<int:pk>', views.delete_customer, name='delete_customer'),
 
      path('category_view_admin/',views.category_view_admin, name='category_view_admin'),
      path('add_category_view/', views.add_category_view, name='add_category_view'),
+     path('add_category/', views.add_category, name='add_category'),
+     path('delete_category/<int:pk>', views.delete_category, name='delete_category'),
 
      path('cart_view_admin/',views.cart_view_admin, name='cart_view_admin'),
      path('cartitem_view_admin/',views.cartitem_view_admin, name='cartitem_view_admin'),
@@ -61,7 +70,7 @@ urlpatterns = [
      path('sales_chart/', views.sales_chart, name='sales_chart'),
      
      path('view_update_category/<int:pk>', views.view_update_category, name='view_update_category'),
-
+     path('update_category/', views.update_category, name='update_category'),
      path('view_update_order/<str:pk>',views.view_update_order, name='view_update_order'),
      path('update_status_order/', views.update_status_order, name='update_status_order'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
