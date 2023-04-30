@@ -569,7 +569,15 @@ def customer_view(request):
 
 @login_required(login_url='adminlogin')
 def product_view(request):
-    products= Product.objects.all()
+    product_list= Product.objects.all()
+    page = request.GET.get('page', 1)
+    paginator = Paginator(product_list, 10)
+    try:
+        products = paginator.page(page)
+    except PageNotAnInteger:
+        products = paginator.page(1)
+    except EmptyPage:
+        products = paginator.page(paginator.num_pages)
     context = {'products':products}
     return render(request, 'admin/view_products.html',context)
 
