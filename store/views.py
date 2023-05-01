@@ -739,7 +739,15 @@ def order_view_admin(request):
 
 @login_required(login_url='adminlogin')
 def orderitem_view_admin(request):
-    orderitems= OrderItem.objects.all()
+    orderitem_list= OrderItem.objects.all()
+    page = request.GET.get('page', 1)
+    paginator = Paginator(orderitem_list, 6)
+    try:
+        orderitems = paginator.page(page)
+    except PageNotAnInteger:
+        orderitems = paginator.page(1)
+    except EmptyPage:
+        orderitems = paginator.page(paginator.num_pages)
     context = {'orderitems':orderitems}
     return render(request, 'admin/view_orderitem.html',context)
 
