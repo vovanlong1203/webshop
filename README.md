@@ -27,3 +27,4 @@ MK: 123456789
 - thêm giỏ hàng, mua hàng, thanh toán
 - phân loại danh mục; tìm kiếm, sắp xếp và đánh giá sản phẩm  
 - Admin (Quản lí danh mục, sản phẩm, người dùng, giỏ hàng, đơn hàng, feedback ), phân trang trong các danh mục, sản phẩm,....
+- thống kê doanh thu trong các tháng 
