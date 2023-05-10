@@ -67,7 +67,7 @@ facebook : fb.com/sumit.luv
       <tr>
         <td> {{p.name}}</td>
         <td> <img src="{{  p.image.url  }}" alt="Profile Pic" height="40px" width="40px" /></td>
-        <td>{{p.selling_price}}</td>
+        <td>{{p.selling_price |floatformat:"g" }}</td>
         <td>{{p.description}}</td>
         <td><a class="btn btn-primary btn-xs" href="{% url 'update_product_view' p.id %}"><span class="glyphicon glyphicon-edit"></span></a></td>
         <td><a class="btn btn-danger btn-xs" href="{% url 'delete_product' p.id %}"><span class="glyphicon glyphicon-trash"></span></a></td>

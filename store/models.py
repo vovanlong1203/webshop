@@ -118,6 +118,12 @@ class OrderItem(models.Model):
     total_price = models.FloatField()
 
 
+class Contact(models.Model):
+    name = models.CharField(max_length=255)
+    email = models.EmailField(max_length=255)
+    subject = models.CharField(max_length=255)
+    message = models.TextField(max_length=1000)
+    
 
 
 

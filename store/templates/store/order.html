@@ -178,7 +178,7 @@ Order
 {% for item in order_items %}
 
 <div class="container mt-5 bg-primary ">
-    <h2>Đơn hàng {{ item.order.id }} - {{ item.order.date_ordered }}</h2>
+    <h2>Đơn hàng {{ item.order.id }} - {{ item.order.date_ordered|date:"SHORT_DATETIME_FORMAT" }}</h2>
     <header class="card-header" style="text-align:center;"> My Orders / Tracking </header>
 
     

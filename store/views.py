@@ -50,6 +50,22 @@ def contact_us(request):
 
     return render(request, 'store/contactus.html',conext)
 
+def add_contact_us(request):
+    if request.method == 'POST':
+        name = request.POST['name']
+        email = request.POST['email']
+        subject = request.POST['subject']
+        message = request.POST['message']
+
+        contact = Contact()
+        contact.name = name
+        contact.email = email
+        contact.subject = subject
+        contact.message = message
+        contact.save()
+
+        return redirect('contactus')
+    return render(request, 'store/contactus.html')
 
 def about_us(request):
     category = Category.objects.filter(status=0)    
@@ -503,6 +519,10 @@ def admin_login(request):
 
 
 
+
+# -------------------------function Admin---------------------------------
+
+
 @login_required(login_url='adminlogin')
 def admin_dashboard_view(request):
     customercount= User.objects.all().count()
@@ -538,6 +558,7 @@ def admin_dashboard_view(request):
     context = {'customercount': customercount, 'productcount': productcount,'ordercount': ordercount, 'chart_div':chart_div,'months':months, 'amounts':amounts,"order":order}
 
     return render(request, 'admin/admin_dashboard.html', context)
+
 
 def sales_chart(request):
     orders = Order.objects.annotate(month=TruncMonth('date_ordered')).values('month').annotate(total_amount=Sum('total')).order_by('month')
@@ -581,6 +602,8 @@ def product_view(request):
     context = {'products':products}
     return render(request, 'admin/view_products.html',context)
 
+
+@login_required(login_url='adminlogin')
 def add_product_view(request):
     cat = Category.objects.all()
     category_list = [c.name for c in cat]
@@ -588,6 +611,8 @@ def add_product_view(request):
     context = {'category_list':category_list}
     return render(request, 'admin/add_product_view.html',context)
 
+
+@login_required(login_url='adminlogin')
 def add_product_admin(request):
     if request.method == 'POST':
         product = Product()
@@ -624,13 +649,14 @@ def add_product_admin(request):
         return redirect('product_view')
     return render(request, 'admin/view_products.html')
         
-
+@login_required(login_url='adminlogin')
 def update_product_view(request, pk):
     product = Product.objects.get(id=pk)
     category_list = [c.name for c in Category.objects.all()]
     context = {'product': product,'category_list':category_list}
     return render(request, 'admin/view_update_product.html',context)
 
+@login_required(login_url='adminlogin')
 def update_product(request):
     if request.method == 'POST':
         id_product = request.POST['id_product']
@@ -668,10 +694,15 @@ def update_product(request):
         return redirect('product_view')
     return render(request, 'admin/view_products.html')
 
+
+@login_required(login_url='adminlogin')
 def delete_product(request, pk):
     product = Product.objects.get(id=pk)
     product.delete()
     return redirect('product_view')
+
+
+
 
 @login_required(login_url='adminlogin')
 def customer_update_view(request,pk):

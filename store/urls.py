@@ -12,8 +12,9 @@ urlpatterns = [
      path('signup/',views.signup_view, name='signup'),
      path('signout/',views.signout_view , name='signout'),
      path('social-auth/', include('social_django.urls', namespace='social')),
-
-
+     path('add_contactus', views.add_contact_us, name='add_contact'),
+ 
+ 
      path('products/<int:pk>/', views.productdetail, name='productdetail'),
      path('category/<int:pk>/', views.category_view, name='category_view'),
      path('category_sort_in/<int:pk>/', views.sort_increment_product, name='category_sort_in'),
