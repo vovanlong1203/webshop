@@ -14,7 +14,7 @@ urlpatterns = [
      path('social-auth/', include('social_django.urls', namespace='social')),
      path('add_contactus', views.add_contact_us, name='add_contact'),
  
- 
+
      path('products/<int:pk>/', views.productdetail, name='productdetail'),
      path('category/<int:pk>/', views.category_view, name='category_view'),
      path('category_sort_in/<int:pk>/', views.sort_increment_product, name='category_sort_in'),
@@ -74,4 +74,6 @@ urlpatterns = [
      path('update_category/', views.update_category, name='update_category'),
      path('view_update_order/<str:pk>',views.view_update_order, name='view_update_order'),
      path('update_status_order/', views.update_status_order, name='update_status_order'),
+
+     path('view_contactus', views.contactus_view, name='view_contactus'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

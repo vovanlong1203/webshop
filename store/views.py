@@ -860,3 +860,9 @@ def update_status_order(request):
         order.save()
         return redirect('order_view_admin')
     return render(request, 'admin/order_view_admin.html')
+
+@login_required(login_url='adminlogin')
+def contactus_view(request):
+    contact_us = Contact.objects.all()
+    context = {'contact_us': contact_us}
+    return render(request, 'admin/view_contactus.html', context)
