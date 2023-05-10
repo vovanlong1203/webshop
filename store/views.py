@@ -584,7 +584,15 @@ def logout_view(request):
 
 @login_required(login_url='adminlogin')
 def customer_view(request):
-    customers= User.objects.all()
+    customers_list= User.objects.all()
+    page = request.GET.get('page', 1)
+    paginator = Paginator(customers_list, 10)
+    try:
+        customers = paginator.page(page)
+    except PageNotAnInteger:
+        customers = paginator.page(1)
+    except EmptyPage:
+        customers = paginator.page(paginator.num_pages)
     context = {'customers':customers}
     return render(request, 'admin/view_customer.html',context)
 
@@ -735,7 +743,15 @@ def delete_customer(request, pk):
 
 @login_required(login_url='adminlogin')
 def category_view_admin(request):
-    categorys= Category.objects.all()
+    categorys_list= Category.objects.all()
+    page = request.GET.get('page', 1)
+    paginator = Paginator(categorys_list, 5)
+    try:
+        categorys = paginator.page(page)
+    except PageNotAnInteger:
+        categorys = paginator.page(1)
+    except EmptyPage:
+        categorys = paginator.page(paginator.num_pages)  
     context = {'categorys':categorys}
     return render(request, 'admin/view_category.html',context)
 
@@ -746,7 +762,15 @@ def add_category_view(request):
 
 @login_required(login_url='adminlogin')
 def cart_view_admin(request):
-    carts= Cart.objects.all()
+    cart_list= Cart.objects.all()
+    page = request.GET.get('page', 1)
+    paginator = Paginator(cart_list, 10)
+    try:
+        carts = paginator.page(page)
+    except PageNotAnInteger:
+        carts = paginator.page(1)
+    except EmptyPage:
+        carts = paginator.page(paginator.num_pages)
     context = {'carts':carts}
     return render(request, 'admin/view_cart.html',context)
 
@@ -758,13 +782,30 @@ def cartitem_view_admin(request):
 
 @login_required(login_url='adminlogin')
 def review_view_admin(request):
-    reviews= Review.objects.all()
+    review_list= Review.objects.all()
+    page = request.GET.get('page', 1)
+    paginator = Paginator(review_list, 10)
+    try:
+        reviews = paginator.page(page)
+    except PageNotAnInteger:
+        reviews = paginator.page(1)
+    except EmptyPage:
+        reviews = paginator.page(paginator.num_pages)
     context = {'reviews':reviews}
     return render(request, 'admin/view_review.html',context)
 
+
 @login_required(login_url='adminlogin')
 def order_view_admin(request):
-    orders= Order.objects.all()
+    order_list= Order.objects.all()
+    page = request.GET.get('page', 1)
+    paginator = Paginator(order_list, 10)
+    try:
+        orders = paginator.page(page)
+    except PageNotAnInteger:
+        orders = paginator.page(1)
+    except EmptyPage:
+        orders = paginator.page(paginator.num_pages)
     context = {'orders':orders}
     return render(request, 'admin/view_order.html',context)
 
@@ -772,7 +813,7 @@ def order_view_admin(request):
 def orderitem_view_admin(request):
     orderitem_list= OrderItem.objects.all()
     page = request.GET.get('page', 1)
-    paginator = Paginator(orderitem_list, 6)
+    paginator = Paginator(orderitem_list, 10)
     try:
         orderitems = paginator.page(page)
     except PageNotAnInteger:
@@ -863,6 +904,14 @@ def update_status_order(request):
 
 @login_required(login_url='adminlogin')
 def contactus_view(request):
-    contact_us = Contact.objects.all()
+    contact_us_list = Contact.objects.all()
+    page = request.GET.get('page', 1)
+    paginator = Paginator(contact_us_list, 10)
+    try:
+        contact_us = paginator.page(page)
+    except PageNotAnInteger:
+        contact_us = paginator.page(1)
+    except EmptyPage:
+        contact_us = paginator.page(paginator.num_pages)
     context = {'contact_us': contact_us}
     return render(request, 'admin/view_contactus.html', context)

@@ -78,6 +78,29 @@
       {% endfor %}
     </table>
   </div>
+
+
+  {% if categorys.has_other_pages %}
+  <ul class="pagination">
+    {% if categorys.has_previous %}
+      <li><a href="?page={{ categorys.previous_page_number }}">&laquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&laquo;</span></li>
+    {% endif %}
+    {% for i in categorys.paginator.page_range %}
+      {% if categorys.number == i %}
+        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+      {% else %}
+        <li><a href="?page={{ i }}">{{ i }}</a></li>
+      {% endif %}
+    {% endfor %}
+    {% if categorys.has_next %}
+      <li><a href="?page={{ categorys.next_page_number }}">&raquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&raquo;</span></li>
+    {% endif %}
+  </ul>
+{% endif %}
 </div>
 <!-- add product floating button -->
 <a href="{% url 'add_category_view'  %}" class="float">
