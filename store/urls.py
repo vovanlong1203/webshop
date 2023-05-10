@@ -3,16 +3,25 @@ from . import views
 from django.conf.urls.static import static
 from django.conf import settings
 from django.contrib.auth.views import LoginView,LogoutView
+
+from django.contrib.auth import views as auth_views
+
 urlpatterns = [
+     path('password_reset/', auth_views.PasswordResetView.as_view(), name='password_reset'),
+     path('password_reset_done/',auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
+     path('password_reset_confirm/<slug:uidb64>/<slug:token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+     path('password_reset_complete/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
+
+
      path('home/', views.home, name='home'),
      path('', views.home, name='home'),
      path('contactus/',views.contact_us, name='contactus'),
      path('aboutus/',views.about_us, name='aboutus'),
-     path('login',views.login_view, name='login'),
+     path('login/',views.login_view, name='login'),
      path('signup/',views.signup_view, name='signup'),
      path('signout/',views.signout_view , name='signout'),
      path('social-auth/', include('social_django.urls', namespace='social')),
-     path('add_contactus', views.add_contact_us, name='add_contact'),
+     path('add_contactus/', views.add_contact_us, name='add_contact'),
  
 
      path('products/<int:pk>/', views.productdetail, name='productdetail'),

@@ -32,7 +32,7 @@
         <div class="card border-0 shadow rounded-3 my-5">
           <div class="card-body p-4 p-sm-5">
             <h5 class="card-title text-center mb-5 fw-light fs-5 text-uppercase fw-bold">Login </h5>
-            <form method="post" action="/login">
+            <form method="post" action="{% url 'login' %}">
               {% csrf_token %}
               <div class="form-floating mb-3">
                 <input type="text" class="form-control" name="username" id="floatingInput" placeholder="username" required>
@@ -48,7 +48,7 @@
                 <label class="form-check-label" for="rememberPasswordCheck">
                   Remember password
                 </label>
-                <a class="form-check-label" href="" for="rememberPasswordCheck" style="float: right; text-decoration: none;">
+                <a class="form-check-label" href="{% url 'password_reset' %}" for="rememberPasswordCheck" style="float: right; text-decoration: none;">
                   Forgot password?
                 </a>
               </div>

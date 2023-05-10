@@ -19,7 +19,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-v)m&u*pi(=-sbm2w-o0gktx-%lsh0!)fot@km@2z-78ticpt7f'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 ALLOWED_HOSTS = ['127.0.0.1','192.168.1.12','192.168.175.33','192.168.2.163']
 
 
@@ -148,3 +148,10 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/home/'
 LOGOUT_URL = '/logout/'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = '587'
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'linhnguyen0378979552@gmail.com'
+EMAIL_HOST_PASSWORD = 'apovjlopewcudmcp'
