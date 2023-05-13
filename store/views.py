@@ -181,10 +181,9 @@ def login_view(request):
             conext = {'category':category, 'product':product, 'username':username}
             return redirect('home')
         else:
-            messages.error(request, "Bad Credentials!!")
-            conext = {'message': 'Bad Credentials!!'}
+            messages.error(request, "Sai mật khẩu hoặc sai tên đăng nhập!!")
+            conext = {'message': 'Sai mật khẩu hoặc sai tên đăng nhập!!'}
             return render(request, 'store/login.html',conext)
-            return redirect('login')
     return render(request, 'store/login.html',{'category':category})
 
 def update_profile_user(request):
