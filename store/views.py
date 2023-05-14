@@ -12,7 +12,7 @@ import random
 import plotly.graph_objs as go
 from django.db.models import Sum
 from django.db.models.functions import TruncMonth
-
+from django.contrib.auth.password_validation import validate_password
 # Create your views here.
 
 def home(request):
@@ -163,6 +163,7 @@ def sort_decrement_product(request, pk):
     return render(request, 'store/category.html',context)
 
 
+
 def login_view(request):
     category = Category.objects.filter(status=0)
     product = Product.objects.filter(status=0)
@@ -170,6 +171,15 @@ def login_view(request):
     if request.method == 'POST':
         username = request.POST['username']
         pass1 = request.POST['pass1']
+        try:
+            print("pass: ",pass1)
+            validate_password(pass1)
+
+            print("Mật khẩu hợp lệ")
+        except Exception as e:
+            conext = {'category':category, 'product':product, 'message': 'Sai mật khẩu hoặc sai tên đăng nhập!!'}
+            return render(request, 'store/login.html',conext)
+
 
         user = authenticate(username=username,password=pass1)
 
@@ -181,7 +191,6 @@ def login_view(request):
             conext = {'category':category, 'product':product, 'username':username}
             return redirect('home')
         else:
-            messages.error(request, "Sai mật khẩu hoặc sai tên đăng nhập!!")
             conext = {'message': 'Sai mật khẩu hoặc sai tên đăng nhập!!'}
             return render(request, 'store/login.html',conext)
     return render(request, 'store/login.html',{'category':category})
@@ -222,8 +231,14 @@ def update_password_user(request):
         un = user.username
         if new_pass != comfirm_pass:
             messages.error(request,"Mật khẩu không khớp")
-            
             return redirect('changepassword_view')
+        try:
+            validate_password(new_pass)
+            print("Mật khẩu hợp lệ")
+        except Exception as e:
+            messages.error(request,"thay đổi mật khẩu thất bại")
+            return redirect('changepassword_view')
+
         user.set_password(new_pass)
         user.save()
         update_session_auth_hash(request, user)
@@ -260,12 +275,21 @@ def signup_view(request):
             conext = {'message': "Passwords didn't matched!!"}
             return render(request,'store/signup.html',conext)
         
+        try:
+            validate_password(pass1)
+            print("Mật khẩu hợp lệ")
+        except Exception as e:
+            messages.error(request,"mật khẩu không hợp lệ!")
+            conext = {'category':category, 'message': 'mật khẩu không hợp lệ!'}
+            return render(request,'store/signup.html',conext)
         myuser = User.objects.create_user(username,email,pass1)
         myuser.first_name = firstname
         myuser.last_name = lastname
         myuser.is_active = True
         myuser.save()
         messages.success(request, "Your Account has been created succesfully!! Please check your email to confirm your email address in order to activate your account.")
+        
+        return render(request, 'store/login.html',{'category':category,'message': 'Đăng kí tài khoản thành công!!'})
         return redirect('login')
 
     return render(request, 'store/signup.html',{'category':category})

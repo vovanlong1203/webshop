@@ -56,7 +56,7 @@ Cart
               <div class="col-md-2 d-flex justify-content-center">
                 <div>
                   <p class="small text-muted mb-4 pb-2">Total</p>
-                  <p class="lead fw-normal mb-0" id="total">$ {{ item.price|floatformat:"g" }}₫  </p>
+                  <p class="lead fw-normal mb-0" id="total"> {{ item.price|floatformat:"g" }}₫  </p>
                 </div>
               </div>
 
@@ -71,7 +71,7 @@ Cart
             <div class="float-end">
               <p class="mb-0 me-5 d-flex align-items-center">
                 <span class="small text-muted me-2">Order total:</span> <span
-                  class="lead fw-normal">${{cart.total_price|floatformat:"g" }}₫ </span>
+                  class="lead fw-normal">{{cart.total_price|floatformat:"g" }}₫ </span>
               </p>
             </div>
 
