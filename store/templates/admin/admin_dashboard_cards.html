@@ -190,6 +190,7 @@
       <thead>
         <tr>
           <th>Id </th>
+          <th>Date time </th>
           <th>User</th>
           <th>First Name</th>
           <th>Last Name</th>
@@ -206,6 +207,7 @@
 
       <tr>
         <td> {{p.id}}</td>
+        <td> {{p.date_ordered|date:"SHORT_DATETIME_FORMAT"}}</td>
         <td>{{ p.user.username }}</td>
         <td>{{p.first_name}}</td>
         <td>{{p.last_name}}</td>

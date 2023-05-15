@@ -84,5 +84,5 @@ urlpatterns = [
      path('view_update_order/<str:pk>',views.view_update_order, name='view_update_order'),
      path('update_status_order/', views.update_status_order, name='update_status_order'),
 
-     path('view_contactus', views.contactus_view, name='view_contactus'),
+     path('view_contactus/', views.contactus_view, name='view_contactus'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

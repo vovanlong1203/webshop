@@ -290,7 +290,6 @@ def signup_view(request):
         messages.success(request, "Your Account has been created succesfully!! Please check your email to confirm your email address in order to activate your account.")
         
         return render(request, 'store/login.html',{'category':category,'message': 'Đăng kí tài khoản thành công!!'})
-        return redirect('login')
 
     return render(request, 'store/signup.html',{'category':category})
 
